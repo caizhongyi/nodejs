@@ -1,0 +1,11 @@
+{
+  "name": "helloworld",
+  "main": "app/index.html",
+  "window" : {
+    "debug" : true ,
+    "toolbar" : false ,
+    "frame" : true ,
+    "transparent" : false ,
+    "resziable" : true
+  }
+}
