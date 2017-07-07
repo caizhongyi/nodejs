@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+  <meta charset="utf-8" />
+  <title>debugger - Node.js Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="res/style.css" tppabs="http://cnodejs.org/cman/res/style.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="res/sh.css" tppabs="http://cnodejs.org/cman/res/sh.css" type="text/css" media="all"/>
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>Node.js Manual &amp; Documentation</h1>
+      <div id="gtoc">
+        <p><a href="index.html" tppabs="http://cnodejs.org/cman/index.html">Index</a> | <a href="all.html" tppabs="http://cnodejs.org/cman/all.html">View on single page</a></p>
+      </div>
+      <hr />
+    </header>
+    <div id="toc"><h2>Table Of Contents</h2><ul><li><a href="#debugger_">Debugger 调试器</a><ul><li><a href="#advanced_Usage_">Advanced Usage 高级用法</a></li></ul></li></ul><hr /></div>
+<h2 id="debugger_">Debugger 调试器</h2>
+
+<p>V8 comes with an extensive debugger which is accessible out-of-process via a
+simple <a href="javascript:if(confirm('http://code.google.com/p/v8/wiki/DebuggerProtocol  \n\n���ļ��޷��� Teleport Ultra ����, ��Ϊ ����һ�����·���ⲿ������Ϊ������ʼ��ַ�ĵ�ַ��  \n\n�����ڷ������ϴ���?'))window.location='http://code.google.com/p/v8/wiki/DebuggerProtocol'" tppabs="http://code.google.com/p/v8/wiki/DebuggerProtocol">TCP protocol</a>.
+Node has a built-in client for this debugger. To use this, start Node with the
+<code>debug</code> argument; a prompt will appear:</p>
+
+<p>V8引擎自身配备了全面的调试器，该调试器通过简单的<a href="javascript:if(confirm('http://code.google.com/p/v8/wiki/DebuggerProtocol  \n\n���ļ��޷��� Teleport Ultra ����, ��Ϊ ����һ�����·���ⲿ������Ϊ������ʼ��ַ�ĵ�ַ��  \n\n�����ڷ������ϴ���?'))window.location='http://code.google.com/p/v8/wiki/DebuggerProtocol'" tppabs="http://code.google.com/p/v8/wiki/DebuggerProtocol">TCP协议</a>在进程外访问。Node中内置了该调试器的客户端，要使用它可以在启动Node时附加<code>debug</code>参数，此模式下将显示debug提示符：</p>
+
+<pre><code>% node debug myscript.js
+debug&gt;</code></pre>
+
+<p>At this point <code>myscript.js</code> is not yet running. To start the script, enter
+the command <code>run</code>. If everything works okay, the output should look like
+this:</p>
+
+<p>此时 <code>myscript.js</code>还没有开始执行，若要执行这段脚本，还需要输入<code>run</code>命令。如果一切运行正常的话输出信息应该如下所示：</p>
+
+<pre><code>% node debug myscript.js
+debug&gt; run
+debugger listening on port 5858
+connecting...ok</code></pre>
+
+<p>Node's debugger client doesn't support the full range of commands, but
+simple step and inspection is possible. By putting the statement <code>debugger;</code>
+into the source code of your script, you will enable a breakpoint.</p>
+
+<p>Node的调试器客户端虽然没有支持所有的命令，但是实现简单的单步调试还是可以的。你可以在脚本代码中声明<code>debugger;</code>语句从而启用一个断点。</p>
+
+<p>For example, suppose <code>myscript.js</code> looked like this:</p>
+
+<p>例如，假设<code>myscript.js</code>代码如下：</p>
+
+<pre><code>// myscript.js
+x = 5;
+setTimeout(function () {
+  debugger;
+  console.log("world");
+}, 1000);
+console.log("hello");</code></pre>
+
+<p>Then once the debugger is run, it will break on line 4.</p>
+
+<p>一旦调试器开始运行，那么它将在执行到第4行代码处时停止。</p>
+
+<pre><code>% ./node debug myscript.js
+debug&gt; run
+debugger listening on port 5858
+connecting...ok
+hello
+break in #&lt;an Object&gt;._onTimeout(), myscript.js:4
+  debugger;
+  ^
+debug&gt; next
+break in #&lt;an Object&gt;._onTimeout(), myscript.js:5
+  console.log("world");
+  ^
+debug&gt; print x
+5
+debug&gt; print 2+2
+4
+debug&gt; next
+world
+break in #&lt;an Object&gt;._onTimeout() returning undefined, myscript.js:6
+}, 1000);
+^
+debug&gt; quit
+A debugging session is active. Quit anyway? (y or n) y
+%</code></pre>
+
+<p>The <code>print</code> command allows you to evaluate variables. The <code>next</code> command steps
+over to the next line. There are a few other commands available and more to
+come type <code>help</code> to see others.</p>
+
+<p><code>print</code>命令允许将变量输出到控制台进行查看。<code>next</code>命令单步调试到下一行代码。还有其他一些可用的命令你可以通过输入<code>help</code>进行查看。</p>
+
+<h3 id="advanced_Usage_">Advanced Usage 高级用法</h3>
+
+<p>The V8 debugger can be enabled and accessed either by starting Node with
+the <code>--debug</code> command-line flag or by signaling an existing Node process
+with <code>SIGUSR1</code>.</p>
+
+<p>要启用V8引擎调试器你可以在启动Node时增加命令行参数<code>--debug</code>或者给一个已经存在的Node进程发送值为<code>SIGUSR1</code>的信号量。</p>
+  </div>
+  <script type="text/javascript" src="res/sh_main.js" tppabs="http://cnodejs.org/cman/res/sh_main.js"></script>
+  <script type="text/javascript" src="res/sh_javascript.min.js" tppabs="http://cnodejs.org/cman/res/sh_javascript.min.js"></script>
+  <script type="text/javascript">highlight(undefined, undefined, 'pre');</script>
+</body>
+</html>

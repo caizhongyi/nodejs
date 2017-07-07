@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+  <meta charset="utf-8" />
+  <title>path - Node.js Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="res/style.css" tppabs="http://cnodejs.org/cman/res/style.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="res/sh.css" tppabs="http://cnodejs.org/cman/res/sh.css" type="text/css" media="all"/>
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>Node.js Manual &amp; Documentation</h1>
+      <div id="gtoc">
+        <p><a href="index.html" tppabs="http://cnodejs.org/cman/index.html">Index</a> | <a href="all.html" tppabs="http://cnodejs.org/cman/all.html">View on single page</a></p>
+      </div>
+      <hr />
+    </header>
+    <div id="toc"><h2>Table Of Contents</h2><ul><li><a href="#path_">Path 路径模块</a><ul><li><a href="#path.normalize">path.normalize(p)</a></li><li><a href="#path.join">path.join([path1], [path2], [...])</a></li><li><a href="#path.resolve">path.resolve([from ...], to)</a></li><li><a href="#path.dirname">path.dirname(p)</a></li><li><a href="#path.basename">path.basename(p, [ext])</a></li><li><a href="#path.extname">path.extname(p)</a></li><li><a href="#path.exists">path.exists(p, [callback])</a></li><li><a href="#path.existsSync">path.existsSync(p)</a></li></ul></li></ul><hr /></div>
+<h2 id="path_">Path 路径模块</h2>
+
+<p>This module contains utilities for dealing with file paths.  Use
+<code>require('path')</code> to use it.  It provides the following methods:</p>
+
+<p>该模块包括了一些处理文件路径的功能，可以通过<code>require('path')</code>方法来使用它。该模块提供了如下的方法：</p>
+
+<h3 id="path.normalize">path.normalize(p)</h3>
+
+<p>Normalize a string path, taking care of <code>'..'</code> and <code>'.'</code> parts.</p>
+
+<p>该方法用于标准化一个字符型的路径，请注意<code>'..'</code> 与 <code>'.'</code> 的使用。</p>
+
+<p>When multiple slashes are found, they're replaces by a single one;
+when the path contains a trailing slash, it is preserved.
+On windows backslashes are used. </p>
+
+<p>当发现有多个斜杠（/）时，系统会将他们替换为一个斜杠；如果路径末尾中包含有一个斜杠，那么系统会保留这个斜杠。在Windows中，上述路径中的斜杠（/）要换成反斜杠（\）。</p>
+
+<p>Example:</p>
+
+<p>示例：</p>
+
+<pre><code>path.normalize('/foo/bar//baz/asdf/quux/..')
+// returns
+'/foo/bar/baz/asdf'</code></pre>
+
+<h3 id="path.join">path.join([path1], [path2], [...])</h3>
+
+<p>Join all arguments together and normalize the resulting path.</p>
+
+<p>该方法用于合并方法中的各参数并得到一个标准化合并的路径字符串。</p>
+
+<p>Example:</p>
+
+<p>示例：</p>
+
+<pre><code>node&gt; require('path').join(
+...   '/foo', 'bar', 'baz/asdf', 'quux', '..')
+'/foo/bar/baz/asdf'</code></pre>
+
+<h3 id="path.resolve">path.resolve([from ...], to)</h3>
+
+<p>Resolves <code>to</code> to an absolute path.</p>
+
+<p>将<code>to</code>参数解析为绝对路径。</p>
+
+<p>If <code>to</code> isn't already absolute <code>from</code> arguments are prepended in right to left
+order, until an absolute path is found. If after using all <code>from</code> paths still
+no absolute path is found, the current working directory is used as well. The
+resulting path is normalized, and trailing slashes are removed unless the path 
+gets resolved to the root directory.</p>
+
+<p>如果参数 <code>to</code>当前不是绝对的，系统会将<code>from</code> 参数按从右到左的顺序依次前缀到<code>to</code>上，直到在<code>from</code>中找到一个绝对路径时停止。如果遍历所有<code>from</code>中的路径后，系统依然没有找到一个绝对路径，那么当前工作目录也会作为参数使用。最终得到的路径是标准化的字符串，并且标准化时系统会自动删除路径末尾的斜杠，但是如果获取的路径是解析到根目录的，那么系统将保留路径末尾的斜杠。</p>
+
+<p>Another way to think of it is as a sequence of <code>cd</code> commands in a shell.</p>
+
+<p>你也可以将这个方法理解为Shell中的一组<code>cd</code>命令。</p>
+
+<pre><code>path.resolve('foo/bar', '/tmp/file/', '..', 'a/../subfile')</code></pre>
+
+<p>Is similar to:</p>
+
+<p>就类似于：</p>
+
+<pre><code>cd foo/bar
+cd /tmp/file/
+cd ..
+cd a/../subfile
+pwd</code></pre>
+
+<p>The difference is that the different paths don't need to exist and may also be
+files.</p>
+
+<p>该方法与<code>cd</code>命令的区别在于该方法中不同的路径不一定存在，而且这些路径也可能是文件。</p>
+
+<p>Examples:</p>
+
+<p>示例：</p>
+
+<pre><code>path.resolve('/foo/bar', './baz')
+// returns
+'/foo/bar/baz'
+
+path.resolve('/foo/bar', '/tmp/file/')
+// returns
+'/tmp/file'
+
+path.resolve('wwwroot', 'static_files/png/', '../gif/image.gif')
+// if currently in /home/myself/node, it returns
+'/home/myself/node/wwwroot/static_files/gif/image.gif'</code></pre>
+
+<h3 id="path.dirname">path.dirname(p)</h3>
+
+<p>Return the directory name of a path.  Similar to the Unix <code>dirname</code> command.</p>
+
+<p>该方法返回一个路径的目录名，类似于Unix中的<code>dirname</code>命令。</p>
+
+<p>Example:</p>
+
+<p>示例：</p>
+
+<pre><code>path.dirname('/foo/bar/baz/asdf/quux')
+// returns
+'/foo/bar/baz/asdf'</code></pre>
+
+<h3 id="path.basename">path.basename(p, [ext])</h3>
+
+<p>Return the last portion of a path.  Similar to the Unix <code>basename</code> command.</p>
+
+<p>该方法返回一个路径中最低一级目录名，类似于Unix中的 <code>basename</code>命令。</p>
+
+<p>Example:</p>
+
+<p>示例：</p>
+
+<pre><code>path.basename('/foo/bar/baz/asdf/quux.html')
+// returns
+'quux.html'
+
+path.basename('/foo/bar/baz/asdf/quux.html', '.html')
+// returns
+'quux'</code></pre>
+
+<h3 id="path.extname">path.extname(p)</h3>
+
+<p>Return the extension of the path.  Everything after the last '.' in the last portion
+of the path.  If there is no '.' in the last portion of the path or the only '.' is
+the first character, then it returns an empty string.  </p>
+
+<p>该方法返回路径中的文件扩展名，即路径最低一级的目录中'.'字符后的任何字符串。如果路径最低一级的目录中'没有'.' 或者只有'.'，那么该方法返回一个空字符串。</p>
+
+<p>Examples:</p>
+
+<p>示例：</p>
+
+<pre><code>path.extname('index.html')
+// returns
+'.html'
+
+path.extname('index')
+// returns
+''</code></pre>
+
+<h3 id="path.exists">path.exists(p, [callback])</h3>
+
+<p>Test whether or not the given path exists.  Then, call the <code>callback</code> argument
+with either true or false. Example:</p>
+
+<p>该方法用于测试参数<code>p</code>中的路径是否存在。然后以true或者false作为参数调用<code>callback</code>回调函数。示例：</p>
+
+<pre><code>path.exists('/etc/passwd', function (exists) {
+  util.debug(exists ? "it's there" : "no passwd!");
+});</code></pre>
+
+<h3 id="path.existsSync">path.existsSync(p)</h3>
+
+<p>Synchronous version of <code>path.exists</code>.</p>
+
+<p><code>path.exists</code>的同步版本。</p>
+  </div>
+  <script type="text/javascript" src="res/sh_main.js" tppabs="http://cnodejs.org/cman/res/sh_main.js"></script>
+  <script type="text/javascript" src="res/sh_javascript.min.js" tppabs="http://cnodejs.org/cman/res/sh_javascript.min.js"></script>
+  <script type="text/javascript">highlight(undefined, undefined, 'pre');</script>
+</body>
+</html>

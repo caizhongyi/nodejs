@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+  <meta charset="utf-8" />
+  <title>child_processes - Node.js Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="res/style.css" tppabs="http://cnodejs.org/cman/res/style.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="res/sh.css" tppabs="http://cnodejs.org/cman/res/sh.css" type="text/css" media="all"/>
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>Node.js Manual &amp; Documentation</h1>
+      <div id="gtoc">
+        <p><a href="index.html" tppabs="http://cnodejs.org/cman/index.html">Index</a> | <a href="all.html" tppabs="http://cnodejs.org/cman/all.html">View on single page</a></p>
+      </div>
+      <hr />
+    </header>
+    <div id="toc"><h2>Table Of Contents</h2><ul><li><a href="#child_Processes_">Child Processes  子进程</a><ul><li><a href="#event_exit_exit_">Event:  'exit' 事件：'exit'</a></li><li><a href="#child.stdin">child.stdin</a></li><li><a href="#child.stdout">child.stdout</a></li><li><a href="#child.stderr">child.stderr</a></li><li><a href="#child.pid">child.pid</a></li><li><a href="#child_process.spawn">child_process.spawn(command, args=[], [options])</a></li><li><a href="#child_process.exec">child_process.exec(command, [options], callback)</a></li><li><a href="#child.kill">child.kill(signal='SIGTERM')</a></li></ul></li></ul><hr /></div>
+<h2 id="child_Processes_">Child Processes  子进程</h2>
+
+<p>Node provides a tri-directional <code>popen(3)</code> facility through the <code>ChildProcess</code>
+class.</p>
+
+<p>在Node里，<code>ChildProcess</code>类提供了一个3向的<code>popen(3)</code>机制。</p>
+
+<p>It is possible to stream data through the child's <code>stdin</code>, <code>stdout</code>, and
+<code>stderr</code> in a fully non-blocking way.</p>
+
+<p>子进程类中的<code>stdin</code>， <code>stdout</code>，和<code>stderr</code> 可以使数据流以完全非阻塞式的方式（non-blocking way）流动（stream）</p>
+
+<p>To create a child process use <code>require('child_process').spawn()</code>.</p>
+
+<p>调用<code>require('child_process').spawn()</code>可以创建一个子进程（child process） </p>
+
+<p>Child processes always have three streams associated with them. <code>child.stdin</code>,
+<code>child.stdout</code>, and <code>child.stderr</code>.</p>
+
+<p><code>child.stdin</code>，<code>child.stdout</code>，和 <code>child.stderr</code>等3个流总是伴随着子进程。</p>
+
+<p><code>ChildProcess</code> is an <code>EventEmitter</code>.</p>
+
+<p><code>ChildProcess</code> 是一种 <code>EventEmitter</code>（事件触发器）。</p>
+
+<h3 id="event_exit_exit_">Event:  'exit' 事件：'exit'</h3>
+
+<p><code>function (code, signal) {}</code></p>
+
+<p>This event is emitted after the child process ends. If the process terminated
+normally, <code>code</code> is the final exit code of the process, otherwise <code>null</code>. If
+the process terminated due to receipt of a signal, <code>signal</code> is the string name
+of the signal, otherwise <code>null</code>.</p>
+
+<p>当子进程结束时，（Node）触发该事件。如果进程正常终结，那么进程的最终退出代码（ final exit code）为<code>code</code>，否则为<code>null</code>。如果进程的结束是因为接收到一个信号，那么<code>signal</code>为string型的信号名称，否则为<code>null</code>。</p>
+
+<p>See <code>waitpid(2)</code>.</p>
+
+<p>参见<code>waitpid(2)</code>。</p>
+
+<h3 id="child.stdin">child.stdin</h3>
+
+<p>A <code>Writable Stream</code> that represents the child process's <code>stdin</code>.
+Closing this stream via <code>end()</code> often causes the child process to terminate.</p>
+
+<p>一个<code>Writable Stream</code>（可写流），表示子进程的<code>stdin</code>。调用<code>end()</code>来关闭这个流通常会终结整个子进程。</p>
+
+<h3 id="child.stdout">child.stdout</h3>
+
+<p>A <code>Readable Stream</code> that represents the child process's <code>stdout</code>.</p>
+
+<p>一个<code>Readable Stream</code>（可读流），表示子进程的<code>stdout</code>（标准输出）。</p>
+
+<h3 id="child.stderr">child.stderr</h3>
+
+<p>A <code>Readable Stream</code> that represents the child process's <code>stderr</code>.</p>
+
+<p>一个<code>Readable Stream</code>（可读流），表示子进程的<code>stderr</code>（标准错误）。</p>
+
+<h3 id="child.pid">child.pid</h3>
+
+<p>The PID of the child process.</p>
+
+<p>子进程的PID（进程编号）。</p>
+
+<p>Example:</p>
+
+<p>例如：</p>
+
+<pre><code>var spawn = require('child_process').spawn,
+    grep  = spawn('grep', ['ssh']);
+
+console.log('Spawned child pid: ' + grep.pid);
+grep.stdin.end();</code></pre>
+
+<h3 id="child_process.spawn">child_process.spawn(command, args=[], [options])</h3>
+
+<p>Launches a new process with the given <code>command</code>, with  command line arguments in <code>args</code>.
+If omitted, <code>args</code> defaults to an empty Array.</p>
+
+<p>使用指定的<code>command</code>创建一个新进程，命令行参数为<code>args</code>。缺省下，<code>args</code>默认为一个空数组。</p>
+
+<p>The third argument is used to specify additional options, which defaults to:</p>
+
+<p>第三个参数用于指定附加的选项，默认如下：</p>
+
+<pre><code>{ cwd: undefined,
+  env: process.env,
+  customFds: [-1, -1, -1],
+  setsid: false
+}</code></pre>
+
+<p><code>cwd</code> allows you to specify the working directory from which the process is spawned.
+Use <code>env</code> to specify environment variables that will be visible to the new process.
+With <code>customFds</code> it is possible to hook up the new process' [stdin, stout, stderr] to
+existing streams; <code>-1</code> means that a new stream should be created. <code>setsid</code>,
+if set true, will cause the subprocess to be run in a new session.</p>
+
+<p>参数<code>cwd</code>允许你指定要创建的子进程的工作目录(working directory)。参数<code>env</code>可以指定哪些环境变量在新进程中是可见的。参数<code>customFds</code>可以使新进程中的[stdin, stout, stderr]和已存在的流进行挂接（hook up）。参数<code>-1</code>可以建立一个新的流。如果设置参数<code>setsid</code>为true，该子进程将转入到一个新会话（session）中运行。</p>
+
+<p>Example of running <code>ls -lh /usr</code>, capturing <code>stdout</code>, <code>stderr</code>, and the exit code:</p>
+
+<p>例：运行<code>ls -lh /usr</code>命令，捕获<code>stdout</code>，<code>stderr</code>和退出代码：</p>
+
+<pre><code>var util   = require('util'),
+    spawn = require('child_process').spawn,
+    ls    = spawn('ls', ['-lh', '/usr']);
+
+ls.stdout.on('data', function (data) {
+  console.log('stdout: ' + data);
+});
+
+ls.stderr.on('data', function (data) {
+  console.log('stderr: ' + data);
+});
+
+ls.on('exit', function (code) {
+  console.log('child process exited with code ' + code);
+});</code></pre>
+
+<p>Example: A very elaborate way to run 'ps ax | grep ssh'</p>
+
+<p>例：运行'ps ax | grep ssh'命令的完整方法：</p>
+
+<pre><code>var util   = require('util'),
+    spawn = require('child_process').spawn,
+    ps    = spawn('ps', ['ax']),
+    grep  = spawn('grep', ['ssh']);
+
+ps.stdout.on('data', function (data) {
+  grep.stdin.write(data);
+});
+
+ps.stderr.on('data', function (data) {
+  console.log('ps stderr: ' + data);
+});
+
+ps.on('exit', function (code) {
+  if (code !== 0) {
+    console.log('ps process exited with code ' + code);
+  }
+  grep.stdin.end();
+});
+
+grep.stdout.on('data', function (data) {
+  console.log(data);
+});
+
+grep.stderr.on('data', function (data) {
+  console.log('grep stderr: ' + data);
+});
+
+grep.on('exit', function (code) {
+  if (code !== 0) {
+    console.log('grep process exited with code ' + code);
+  }
+});</code></pre>
+
+<p>Example of checking for failed exec:</p>
+
+<p>检测exec执行是否失败的例子：</p>
+
+<pre><code>var spawn = require('child_process').spawn,
+    child = spawn('bad_command');
+
+child.stderr.on('data', function (data) {
+  if (/^execvp\(\)/.test(data.asciiSlice(0,data.length))) {
+    console.log('Failed to start child process.');
+  }
+});</code></pre>
+
+<p>See also: <code>child_process.exec()</code></p>
+
+<p>可参见：<code>child_process.exec()</code></p>
+
+<h3 id="child_process.exec">child_process.exec(command, [options], callback)</h3>
+
+<p>High-level way to execute a command as a child process, buffer the
+output, and return it all in a callback.</p>
+
+<p>以子进程方式执行一个命令的高级方法。所有输出经过缓冲后在同一个回调函数中返回。</p>
+
+<pre><code>var util   = require('util'),
+    exec  = require('child_process').exec,
+    child;
+
+child = exec('cat *.js bad_file | wc -l',
+  function (error, stdout, stderr) {
+    console.log('stdout: ' + stdout);
+    console.log('stderr: ' + stderr);
+    if (error !== null) {
+      console.log('exec error: ' + error);
+    }
+});</code></pre>
+
+<p>The callback gets the arguments <code>(error, stdout, stderr)</code>. On success, <code>error</code>
+will be <code>null</code>.  On error, <code>error</code> will be an instance of <code>Error</code> and <code>err.code</code>
+will be the exit code of the child process, and <code>err.signal</code> will be set to the
+signal that terminated the process.</p>
+
+<p>回调函数获得<code>(error, stdout, stderr)</code>3个参数。成功时，<code>error</code>为<code>null</code>。错误时<code>error</code>为一个<code>Error</code>实例，<code>err.code</code>为该子进程的退出代码，<code>err.signal</code>为使该进程结束的信号。</p>
+
+<p>There is a second optional argument to specify several options. The default options are</p>
+
+<p>可选的第二个参数用于指定一些选项。默认选项如下：</p>
+
+<pre><code>{ encoding: 'utf8',
+  timeout: 0,
+  maxBuffer: 200*1024,
+  killSignal: 'SIGTERM',
+  cwd: null,
+  env: null }</code></pre>
+
+<p>If <code>timeout</code> is greater than 0, then it will kill the child process
+if it runs longer than <code>timeout</code> milliseconds. The child process is killed with
+<code>killSignal</code> (default: <code>'SIGTERM'</code>). <code>maxBuffer</code> specifies the largest
+amount of data allowed on stdout or stderr - if this value is exceeded then
+the child process is killed.</p>
+
+<p>如果参数<code>timeout</code>的值超过0，那么当运行超过<code>timeout</code>毫秒后子进程将终止。<code>killSignal</code> 为终止子进程的信号(默认为： <code>'SIGTERM'</code>)。 参数<code>maxBuffer</code>指定了stdout或stderr流最大数据量，一旦超过该值，子进程将会终止。</p>
+
+<h3 id="child.kill">child.kill(signal='SIGTERM')</h3>
+
+<p>Send a signal to the child process. If no argument is given, the process will
+be sent <code>'SIGTERM'</code>. See <code>signal(7)</code> for a list of available signals.</p>
+
+<p>给子进程发送信号。如果没有指定参数，（Node）将会发送<code>'SIGTERM'</code>信号。在<code>signal(7)</code> 中可查阅到可用的信号列表。</p>
+
+<pre><code>var spawn = require('child_process').spawn,
+    grep  = spawn('grep', ['ssh']);
+
+grep.on('exit', function (code, signal) {
+  console.log('child process terminated due to receipt of signal '+signal);
+});
+
+// send SIGHUP to process
+grep.kill('SIGHUP');</code></pre>
+
+<p>Note that while the function is called <code>kill</code>, the signal delivered to the child
+process may not actually kill it.  <code>kill</code> really just sends a signal to a process.</p>
+
+<p>注意：虽然函数名为<code>kill</code>（杀死），发送的信号并不会真正杀死子进程。<code>kill</code>仅仅是向该进程发送一个信号。</p>
+
+<p>See <code>kill(2)</code></p>
+
+<p>参见<code>kill(2)</code></p>
+  </div>
+  <script type="text/javascript" src="res/sh_main.js" tppabs="http://cnodejs.org/cman/res/sh_main.js"></script>
+  <script type="text/javascript" src="res/sh_javascript.min.js" tppabs="http://cnodejs.org/cman/res/sh_javascript.min.js"></script>
+  <script type="text/javascript">highlight(undefined, undefined, 'pre');</script>
+</body>
+</html>

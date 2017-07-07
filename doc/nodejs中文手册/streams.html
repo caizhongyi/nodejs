@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+  <meta charset="utf-8" />
+  <title>streams - Node.js Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="res/style.css" tppabs="http://cnodejs.org/cman/res/style.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="res/sh.css" tppabs="http://cnodejs.org/cman/res/sh.css" type="text/css" media="all"/>
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>Node.js Manual &amp; Documentation</h1>
+      <div id="gtoc">
+        <p><a href="index.html" tppabs="http://cnodejs.org/cman/index.html">Index</a> | <a href="all.html" tppabs="http://cnodejs.org/cman/all.html">View on single page</a></p>
+      </div>
+      <hr />
+    </header>
+    <div id="toc"><h2>Table Of Contents</h2><ul><li><a href="#streams_">Streams 流</a></li><li><a href="#readable_Stream_">Readable Stream 可读流</a><ul><li><a href="#event_data_data_">Event: 'data' 事件：'data'</a></li><li><a href="#event_end_end_">Event: 'end' 事件：'end'</a></li><li><a href="#event_error_error_">Event: 'error' 事件：'error'</a></li><li><a href="#event_close_close_">Event: 'close' 事件：'close'</a></li><li><a href="#event_fd_fd_">Event: 'fd' 事件：'fd'</a></li><li><a href="#stream.readable">stream.readable</a></li><li><a href="#stream.setEncoding">stream.setEncoding(encoding)</a></li><li><a href="#stream.pause">stream.pause()</a></li><li><a href="#stream.resume">stream.resume()</a></li><li><a href="#stream.destroy">stream.destroy()</a></li><li><a href="#stream.destroySoon">stream.destroySoon()</a></li><li><a href="#stream.pipe">stream.pipe(destination, [options])</a></li></ul></li><li><a href="#writable_Stream_">Writable Stream 可写流</a><ul><li><a href="#event_drain_drain_">Event: 'drain' 事件：'drain'</a></li><li><a href="#event_error_error_">Event: 'error' 事件：'error'</a></li><li><a href="#event_close_close_">Event: 'close' 事件：'close'</a></li><li><a href="#event_pipe_pipe_">Event: 'pipe' 事件：'pipe'</a></li><li><a href="#stream.writable">stream.writable</a></li><li><a href="#stream.write">stream.write(string, encoding='utf8', [fd])</a></li><li><a href="#stream.write">stream.write(buffer)</a></li><li><a href="#stream.end">stream.end()</a></li><li><a href="#stream.end">stream.end(string, encoding)</a></li><li><a href="#stream.end">stream.end(buffer)</a></li><li><a href="#stream.destroy">stream.destroy()</a></li></ul></li></ul><hr /></div>
+<h2 id="streams_">Streams 流</h2>
+
+<p>A stream is an abstract interface implemented by various objects in Node.
+For example a request to an HTTP server is a stream, as is stdout. Streams
+are readable, writable, or both. All streams are instances of <code>EventEmitter</code>.</p>
+
+<p>在Node中，Stream（流）是一个由不同对象实现的抽象接口。例如请求HTTP服务器的request是一个流，类似于stdout（标准输出）。流可以是可读的，可写的，或者既可读又可写。所有流都是<code>EventEmitter</code>的实例。</p>
+
+<h2 id="readable_Stream_">Readable Stream 可读流</h2>
+
+<p>A <code>Readable Stream</code> has the following methods, members, and events.</p>
+
+<p>一个<code>可读流</code>具有下述的方法、成员、及事件。</p>
+
+<h3 id="event_data_data_">Event: 'data' 事件：'data'</h3>
+
+<p><code>function (data) { }</code></p>
+
+<p>The <code>'data'</code> event emits either a <code>Buffer</code> (by default) or a string if
+<code>setEncoding()</code> was used.</p>
+
+<p><code>'data'</code>事件的回调函数参数默认情况下是一个<code>Buffer</code>对象。如果使用了<code>setEncoding()</code> 则参数为一个字符串。</p>
+
+<h3 id="event_end_end_">Event: 'end' 事件：'end'</h3>
+
+<p><code>function () { }</code></p>
+
+<p>Emitted when the stream has received an EOF (FIN in TCP terminology).
+Indicates that no more <code>'data'</code> events will happen. If the stream is also
+writable, it may be possible to continue writing.</p>
+
+<p>当流中接收到EOF（TCP中为FIN）时此事件被触发，表示流的读取已经结束，不会再发生任何<code>'data'</code>事件。如果流同时也是可写的，那它还可以继续写入。</p>
+
+<h3 id="event_error_error_">Event: 'error' 事件：'error'</h3>
+
+<p><code>function (exception) { }</code></p>
+
+<p>Emitted if there was an error receiving data.</p>
+
+<p>接收数据的过程中发生任何错误时，此事件被触发。</p>
+
+<h3 id="event_close_close_">Event: 'close' 事件：'close'</h3>
+
+<p><code>function () { }</code></p>
+
+<p>Emitted when the underlying file descriptor has been closed. Not all streams
+will emit this.  (For example, an incoming HTTP request will not emit
+<code>'close'</code>.)</p>
+
+<p>当底层的文件描述符被关闭时触发此事件，并不是所有流都会触发这个事件。（例如，一个连接进入的HTTP request流就不会触发<code>'close'</code>事件。）</p>
+
+<h3 id="event_fd_fd_">Event: 'fd' 事件：'fd'</h3>
+
+<p><code>function (fd) { }</code></p>
+
+<p>Emitted when a file descriptor is received on the stream. Only UNIX streams
+support this functionality; all others will simply never emit this event.</p>
+
+<p>当在流中接收到一个文件描述符时触发此事件。只有UNIX流支持这个功能，其他类型的流均不会触发此事件。</p>
+
+<h3 id="stream.readable">stream.readable</h3>
+
+<p>A boolean that is <code>true</code> by default, but turns <code>false</code> after an <code>'error'</code>
+occurred, the stream came to an <code>'end'</code>, or <code>destroy()</code> was called.</p>
+
+<p>这是一个布尔值，默认值为<code>true</code>。当<code>'error'</code>事件或<code>'end'</code>事件发生后，或者<code>destroy()</code>被调用后，这个属性将变为<code>false</code>。</p>
+
+<h3 id="stream.setEncoding">stream.setEncoding(encoding)</h3>
+
+<p>Makes the data event emit a string instead of a <code>Buffer</code>. <code>encoding</code> can be
+<code>'utf8'</code>, <code>'ascii'</code>, or <code>'base64'</code>.</p>
+
+<p>调用此方法会影响<code>'data'</code>事件的回调函数参数形式，默认为<code>Buffer</code>对象，调用此方法后为字符串。<code>encoding</code>参数可以是<code>'utf8'</code>、<code>'ascii'</code>、或<code>'base64'</code>。</p>
+
+<h3 id="stream.pause">stream.pause()</h3>
+
+<p>Pauses the incoming <code>'data'</code> events.</p>
+
+<p>暂停<code>'data'</code>事件的触发。</p>
+
+<h3 id="stream.resume">stream.resume()</h3>
+
+<p>Resumes the incoming <code>'data'</code> events after a <code>pause()</code>.</p>
+
+<p>恢复被<code>pause()</code>调用暂停的<code>'data'</code>事件触发。</p>
+
+<h3 id="stream.destroy">stream.destroy()</h3>
+
+<p>Closes the underlying file descriptor. Stream will not emit any more events.</p>
+
+<p>关闭底层的文件描述符。流上将不会再触发任何事件。</p>
+
+<h3 id="stream.destroySoon">stream.destroySoon()</h3>
+
+<p>After the write queue is drained, close the file descriptor.</p>
+
+<p>在写队列清空后（所有写操作完成后），关闭文件描述符。</p>
+
+<h3 id="stream.pipe">stream.pipe(destination, [options])</h3>
+
+<p>This is a <code>Stream.prototype</code> method available on all <code>Stream</code>s.</p>
+
+<p>这是<code>Stream.prototype</code>（Stream原型对象）的一个方法，对所有<code>Stream</code>对象有效。</p>
+
+<p>Connects this read stream to <code>destination</code> WriteStream. Incoming
+data on this stream gets written to <code>destination</code>. The destination and source
+streams are kept in sync by pausing and resuming as necessary.</p>
+
+<p>用于将这个可读流和<code>destination</code>目标可写流连接起来，传入这个流中的数据将会写入到<code>destination</code>流中。通过在必要时暂停和恢复流，来源流和目的流得以保持同步。</p>
+
+<p>Emulating the Unix <code>cat</code> command:</p>
+
+<p>模拟Unix系统的<code>cat</code>命令：</p>
+
+<pre><code>process.stdin.resume();
+process.stdin.pipe(process.stdout);</code></pre>
+
+<p>By default <code>end()</code> is called on the destination when the source stream emits
+<code>end</code>, so that <code>destination</code> is no longer writable. Pass <code>{ end: false }</code> as
+<code>options</code> to keep the destination stream open.</p>
+
+<p>默认情况下，当来源流的<code>end</code>事件触发时目的流的<code>end()</code>方法会被调用，此时<code>destination</code>目的流将不再可写入。要在这种情况下为了保持目的流仍然可写入，可将<code>options</code>参数设为<code>{ end: false }</code>。</p>
+
+<p>This keeps <code>process.stdout</code> open so that "Goodbye" can be written at the end.</p>
+
+<p>这使<code>process.stdout</code>保持打开状态，因此"Goodbye"可以在end事件发生后被写入。</p>
+
+<pre><code>process.stdin.resume();
+
+process.stdin.pipe(process.stdout, { end: false });
+
+process.stdin.on("end", function() {
+  process.stdout.write("Goodbye\n");
+});</code></pre>
+
+<p>NOTE: If the source stream does not support <code>pause()</code> and <code>resume()</code>, this function
+adds simple definitions which simply emit <code>'pause'</code> and <code>'resume'</code> events on
+the source stream.</p>
+
+<p>注意：如果来源流不支持<code>pause()</code>和<code>resume()</code>方法，此函数将在来源流对象上增加这两个方法的简单定义，内容为触发<code>'pause'</code>和<code>'resume'</code>事件。</p>
+
+<h2 id="writable_Stream_">Writable Stream 可写流</h2>
+
+<p>A <code>Writable Stream</code> has the following methods, members, and events.</p>
+
+<p>一个<code>可写流</code>具有下列方法、成员、和事件。</p>
+
+<h3 id="event_drain_drain_">Event: 'drain' 事件：'drain'</h3>
+
+<p><code>function () { }</code></p>
+
+<p>Emitted after a <code>write()</code> method was called that returned <code>false</code> to
+indicate that it is safe to write again.</p>
+
+<p>发生在<code>write()</code>方法被调用并返回<code>false</code>之后。此事件被触发说明内核缓冲区已空，再次写入是安全的。</p>
+
+<h3 id="event_error_error_">Event: 'error' 事件：'error'</h3>
+
+<p><code>function (exception) { }</code></p>
+
+<p>Emitted on error with the exception <code>exception</code>.</p>
+
+<p>发生错误时被触发，回调函数接收一个异常参数<code>exception</code>。</p>
+
+<h3 id="event_close_close_">Event: 'close' 事件：'close'</h3>
+
+<p><code>function () { }</code></p>
+
+<p>Emitted when the underlying file descriptor has been closed.</p>
+
+<p>底层文件描述符被关闭时被触发。</p>
+
+<h3 id="event_pipe_pipe_">Event: 'pipe' 事件：'pipe'</h3>
+
+<p><code>function (src) { }</code></p>
+
+<p>Emitted when the stream is passed to a readable stream's pipe method.</p>
+
+<p>当此可写流作为参数传给一个可读流的pipe方法时被触发。</p>
+
+<h3 id="stream.writable">stream.writable</h3>
+
+<p>A boolean that is <code>true</code> by default, but turns <code>false</code> after an <code>'error'</code>
+occurred or <code>end()</code> / <code>destroy()</code> was called.</p>
+
+<p>一个布尔值，默认值为<code>true</code>。在<code>'error'</code>事件被触发之后，或<code>end()</code> / <code>destroy()</code>方法被调用后此属性被设为<code>false</code>。</p>
+
+<h3 id="stream.write">stream.write(string, encoding='utf8', [fd])</h3>
+
+<p>Writes <code>string</code> with the given <code>encoding</code> to the stream.  Returns <code>true</code> if
+the string has been flushed to the kernel buffer.  Returns <code>false</code> to
+indicate that the kernel buffer is full, and the data will be sent out in
+the future. The <code>'drain'</code> event will indicate when the kernel buffer is
+empty again. The <code>encoding</code> defaults to <code>'utf8'</code>.</p>
+
+<p>使用指定编码<code>encoding</code>将字符串<code>string</code>写入到流中。如果字符串被成功写入内核缓冲区，此方法返回<code>true</code>。如果内核缓冲区已满，此方法返回<code>false</code>，数据将在以后被送出。当内核缓冲区再次被清空后'drain'<code>事件将被触发。</code>encoding<code>参数默认为</code>'utf8'`。</p>
+
+<p>If the optional <code>fd</code> parameter is specified, it is interpreted as an integral
+file descriptor to be sent over the stream. This is only supported for UNIX
+streams, and is silently ignored otherwise. When writing a file descriptor in
+this manner, closing the descriptor before the stream drains risks sending an
+invalid (closed) FD.</p>
+
+<p>如果指定了可选参数<code>fd</code>，它将被作为一个文件描述符通过流传送。此功能仅被Unix流所支持，对于其他流此操作将被忽略而没有任何提示。当使用此方法传送一个文件描述符时，如果在流没有清空前关闭此文件描述符，将造成传送一个无效（已关闭）FD的风险。</p>
+
+<h3 id="stream.write">stream.write(buffer)</h3>
+
+<p>Same as the above except with a raw buffer.</p>
+
+<p>除了用一个Buffer对象替代字符串之外，其他同上。</p>
+
+<h3 id="stream.end">stream.end()</h3>
+
+<p>Terminates the stream with EOF or FIN.</p>
+
+<p>使用EOF或FIN结束一个流的输出。</p>
+
+<h3 id="stream.end">stream.end(string, encoding)</h3>
+
+<p>Sends <code>string</code> with the given <code>encoding</code> and terminates the stream with EOF
+or FIN. This is useful to reduce the number of packets sent.</p>
+
+<p>以指定的字符编码<code>encoding</code>传送一个字符串<code>string</code>，然后使用EOF或FIN结束流的输出。这对降低数据包传输量有所帮助。</p>
+
+<h3 id="stream.end">stream.end(buffer)</h3>
+
+<p>Same as above but with a <code>buffer</code>.</p>
+
+<p>除了用一个<code>buffer</code>对象替代字符串之外，其他同上。</p>
+
+<h3 id="stream.destroy">stream.destroy()</h3>
+
+<p>Closes the underlying file descriptor. Stream will not emit any more events.</p>
+
+<p>关闭底层文件描述符。在此流上将不会再触发任何事件。</p>
+  </div>
+  <script type="text/javascript" src="res/sh_main.js" tppabs="http://cnodejs.org/cman/res/sh_main.js"></script>
+  <script type="text/javascript" src="res/sh_javascript.min.js" tppabs="http://cnodejs.org/cman/res/sh_javascript.min.js"></script>
+  <script type="text/javascript">highlight(undefined, undefined, 'pre');</script>
+</body>
+</html>

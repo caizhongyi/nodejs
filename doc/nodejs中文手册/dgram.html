@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+  <meta charset="utf-8" />
+  <title>dgram - Node.js Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="res/style.css" tppabs="http://cnodejs.org/cman/res/style.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="res/sh.css" tppabs="http://cnodejs.org/cman/res/sh.css" type="text/css" media="all"/>
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>Node.js Manual &amp; Documentation</h1>
+      <div id="gtoc">
+        <p><a href="index.html" tppabs="http://cnodejs.org/cman/index.html">Index</a> | <a href="all.html" tppabs="http://cnodejs.org/cman/all.html">View on single page</a></p>
+      </div>
+      <hr />
+    </header>
+    <div id="toc"><h2>Table Of Contents</h2><ul><li><a href="#uDP_Datagram_Sockets_">UDP / Datagram Sockets 数据报套接字模块</a><ul><li><a href="#event_message_message_">Event: 'message' 事件：'message'</a></li><li><a href="#event_listening_listening_">Event: 'listening' 事件：'listening'</a></li><li><a href="#event_close_close_">Event: 'close' 事件：'close'</a></li><li><a href="#dgram.createSocket">dgram.createSocket(type, [callback])</a></li><li><a href="#dgram.send">dgram.send(buf, offset, length, path, [callback])</a></li><li><a href="#dgram.send">dgram.send(buf, offset, length, port, address, [callback])</a></li><li><a href="#dgram.bind">dgram.bind(path)</a></li><li><a href="#dgram.bind">dgram.bind(port, [address])</a></li><li><a href="#dgram.close">dgram.close()</a></li><li><a href="#dgram.address">dgram.address()</a></li><li><a href="#dgram.setBroadcast">dgram.setBroadcast(flag)</a></li><li><a href="#dgram.setTTL">dgram.setTTL(ttl)</a></li><li><a href="#dgram.setMulticastTTL">dgram.setMulticastTTL(ttl)</a></li><li><a href="#dgram.setMulticastLoopback">dgram.setMulticastLoopback(flag)</a></li><li><a href="#dgram.addMembership">dgram.addMembership(multicastAddress, [multicastInterface])</a></li><li><a href="#dgram.dropMembership">dgram.dropMembership(multicastAddress, [multicastInterface])</a></li></ul></li></ul><hr /></div>
+<h2 id="uDP_Datagram_Sockets_">UDP / Datagram Sockets 数据报套接字模块</h2>
+
+<p>Datagram sockets are available through <code>require('dgram')</code>.  Datagrams are most commonly
+handled as IP/UDP messages but they can also be used over Unix domain sockets.</p>
+
+<p>要使用数据报套接字模块需要调用<code>require('dgram')</code>。数据报通常作为IP/UDP消息来处理，但它也可用于Unix域套接字。 </p>
+
+<h3 id="event_message_message_">Event: 'message' 事件：'message'</h3>
+
+<p><code>function (msg, rinfo) { }</code></p>
+
+<p>Emitted when a new datagram is available on a socket.  <code>msg</code> is a <code>Buffer</code> and <code>rinfo</code> is
+an object with the sender's address information and the number of bytes in the datagram.</p>
+
+<p>当套接字接收到一个新的数据报的时候触发此事件。<code>msg</code>是一个<code>Buffer</code>缓冲器，<code>rinfo</code>是一个包含了发送方地址信息以及数据报字节长度的对象。</p>
+
+<h3 id="event_listening_listening_">Event: 'listening' 事件：'listening'</h3>
+
+<p><code>function () { }</code></p>
+
+<p>Emitted when a socket starts listening for datagrams.  This happens as soon as UDP sockets
+are created.  Unix domain sockets do not start listening until calling <code>bind()</code> on them.</p>
+
+<p>当一个套接字开始监听数据报的时候触发。一旦UDP套接字建立后就会触发这个事件。而Unix域套接字直到调用了<code>bind()</code>方法才会开始监听。</p>
+
+<h3 id="event_close_close_">Event: 'close' 事件：'close'</h3>
+
+<p><code>function () { }</code></p>
+
+<p>Emitted when a socket is closed with <code>close()</code>.  No new <code>message</code> events will be emitted
+on this socket.</p>
+
+<p>当调用<code>close()</code>方法关闭一个套接字时触发此事件。此后不会再有新的<code>message</code>事件在此套接字上发生。</p>
+
+<h3 id="dgram.createSocket">dgram.createSocket(type, [callback])</h3>
+
+<p>Creates a datagram socket of the specified types.  Valid types are:
+<code>udp4</code>, <code>udp6</code>, and <code>unix_dgram</code>.</p>
+
+<p>建立一个指定类型的数据报套接字，有效类型有：<code>udp4</code>，<code>udp6</code>，以及<code>unix_dgram</code>。 </p>
+
+<p>Takes an optional callback which is added as a listener for <code>message</code> events.</p>
+
+<p>可选参数callback指定了<code>message</code>事件的监听器回调函数。 </p>
+
+<h3 id="dgram.send">dgram.send(buf, offset, length, path, [callback])</h3>
+
+<p>For Unix domain datagram sockets, the destination address is a pathname in the filesystem.
+An optional callback may be supplied that is invoked after the <code>sendto</code> call is completed
+by the OS.  It is not safe to re-use <code>buf</code> until the callback is invoked.  Note that
+unless the socket is bound to a pathname with <code>bind()</code> there is no way to receive messages
+on this socket.</p>
+
+<p>对于Unix域数据报套接字而言，目标地址是文件系统中的一个路径。可选参数callback指定了系统调用<code>sendto</code>完成后的回调函数。在回调函数callback执行前重复使用buf是很不安全的。要注意除非这个套接字已经使用<code>bind()</code>方法绑定到一个路径上，否则这个套接字无法接收到任何信息。 </p>
+
+<p>Example of sending a message to syslogd on OSX via Unix domain socket <code>/var/run/syslog</code>:</p>
+
+<p>一个在OSX系统上，通过Unix域套接字<code>/var/run/syslog</code>向syslogd发送消息的例子：</p>
+
+<pre><code>var dgram = require('dgram');
+var message = new Buffer("A message to log.");
+var client = dgram.createSocket("unix_dgram");
+client.send(message, 0, message.length, "/var/run/syslog",
+  function (err, bytes) {
+    if (err) {
+      throw err;
+    }
+    console.log("Wrote " + bytes + " bytes to socket.");
+});</code></pre>
+
+<h3 id="dgram.send">dgram.send(buf, offset, length, port, address, [callback])</h3>
+
+<p>For UDP sockets, the destination port and IP address must be specified.  A string
+may be supplied for the <code>address</code> parameter, and it will be resolved with DNS.  An
+optional callback may be specified to detect any DNS errors and when <code>buf</code> may be
+re-used.  Note that DNS lookups will delay the time that a send takes place, at
+least until the next tick.  The only way to know for sure that a send has taken place
+is to use the callback.</p>
+
+<p>对于UDP套接字来说，目标端口和IP地址是必须要指定的。可以用字符串来指定<code>address</code>参数，这个参数通过DNS进行解析。可选参数callback指定一个回调函数，用于检测DNS解析错误以及什么时候<code>buf</code>可被重用。注意DNS查询将会使发送动作最少延迟到下一个时间片执行，如果你想确定发送动作是否发生，使用回调将是唯一的办法。</p>
+
+<p>Example of sending a UDP packet to a random port on <code>localhost</code>;</p>
+
+<p>下面是一个发送UDP数据包到<code>localhost</code>（本机）一个随机端口的例子：</p>
+
+<pre><code>var dgram = require('dgram');
+var message = new Buffer("Some bytes");
+var client = dgram.createSocket("udp4");
+client.send(message, 0, message.length, 41234, "localhost");
+client.close();</code></pre>
+
+<h3 id="dgram.bind">dgram.bind(path)</h3>
+
+<p>For Unix domain datagram sockets, start listening for incoming datagrams on a
+socket specified by <code>path</code>. Note that clients may <code>send()</code> without <code>bind()</code>,
+but no datagrams will be received without a <code>bind()</code>.</p>
+
+<p>对Unix域数据报套接字来说，通过指定一个<code>path</code>（路径）开始在套接字上监听数据报。注意客户端可以无需调用<code>bind()</code>直接使用<code>send()</code>方法发送数据报，但是不使用<code>bind()</code>方法将无法接收到任何数据报。 </p>
+
+<p>Example of a Unix domain datagram server that echoes back all messages it receives:</p>
+
+<p>下面是一个Unix域数据报服务器的例子，此服务器将接收到的所有消息原样返回： </p>
+
+<pre><code>var dgram = require("dgram");
+var serverPath = "/tmp/dgram_server_sock";
+var server = dgram.createSocket("unix_dgram");
+
+server.on("message", function (msg, rinfo) {
+  console.log("got: " + msg + " from " + rinfo.address);
+  server.send(msg, 0, msg.length, rinfo.address);
+});
+
+server.on("listening", function () {
+  console.log("server listening " + server.address().address);
+})
+
+server.bind(serverPath);</code></pre>
+
+<p>Example of a Unix domain datagram client that talks to this server:</p>
+
+<p>下面是一个与上述服务器通信的Unix域数据报客户端的例子： </p>
+
+<pre><code>var dgram = require("dgram");
+var serverPath = "/tmp/dgram_server_sock";
+var clientPath = "/tmp/dgram_client_sock";
+
+var message = new Buffer("A message at " + (new Date()));
+
+var client = dgram.createSocket("unix_dgram");
+
+client.on("message", function (msg, rinfo) {
+  console.log("got: " + msg + " from " + rinfo.address);
+});
+
+client.on("listening", function () {
+  console.log("client listening " + client.address().address);
+  client.send(message, 0, message.length, serverPath);
+});
+
+client.bind(clientPath);</code></pre>
+
+<h3 id="dgram.bind">dgram.bind(port, [address])</h3>
+
+<p>For UDP sockets, listen for datagrams on a named <code>port</code> and optional <code>address</code>.  If
+<code>address</code> is not specified, the OS will try to listen on all addresses.</p>
+
+<p>对于UDP套接字而言，该方法会在<code>port</code>指定的端口和可选地址 <code>address</code>上监听数据报。如果<code>address</code>没有指定，则操作系统会监听所有有效地址。 </p>
+
+<p>Example of a UDP server listening on port 41234:</p>
+
+<p>下面是一个监听在41234端口的UDP服务器的例子：</p>
+
+<pre><code>var dgram = require("dgram");
+
+var server = dgram.createSocket("udp4");
+var messageToSend = new Buffer("A message to send");
+
+server.on("message", function (msg, rinfo) {
+  console.log("server got: " + msg + " from " +
+    rinfo.address + ":" + rinfo.port);
+});
+
+server.on("listening", function () {
+  var address = server.address();
+  console.log("server listening " +
+      address.address + ":" + address.port);
+});
+
+server.bind(41234);
+// server listening 0.0.0.0:41234</code></pre>
+
+<h3 id="dgram.close">dgram.close()</h3>
+
+<p>Close the underlying socket and stop listening for data on it.  UDP sockets
+automatically listen for messages, even if they did not call <code>bind()</code>.</p>
+
+<p>该函数关闭底层的套接字并停止在其上监听数据。UDP套接字在没有调用<code>bing()</code>方法的情况下也自动监听消息。</p>
+
+<h3 id="dgram.address">dgram.address()</h3>
+
+<p>Returns an object containing the address information for a socket.  For UDP sockets,
+this object will contain <code>address</code> and <code>port</code>.  For Unix domain sockets, it will contain
+only <code>address</code>.</p>
+
+<p>返回包含套接字地址信息的对象。对于UDP套接字来说，这个对象将包含<code>address</code>（地址）和<code>port</code>（端口）。对于UNIX域套接字来说，这个对象仅包含<code>address</code>（地址）。</p>
+
+<h3 id="dgram.setBroadcast">dgram.setBroadcast(flag)</h3>
+
+<p>Sets or clears the <code>SO_BROADCAST</code> socket option.  When this option is set, UDP packets
+may be sent to a local interface's broadcast address.</p>
+
+<p>设置或者清除套接字的<code>SO_BROADCAST</code>（广播）选项。当该设置生效时，UDP数据包将被发送至本地网络接口的广播地址。</p>
+
+<h3 id="dgram.setTTL">dgram.setTTL(ttl)</h3>
+
+<p>Sets the <code>IP_TTL</code> socket option.  TTL stands for "Time to Live," but in this context it
+specifies the number of IP hops that a packet is allowed to go through.  Each router or
+gateway that forwards a packet decrements the TTL.  If the TTL is decremented to 0 by a
+router, it will not be forwarded.  Changing TTL values is typically done for network
+probes or when multicasting.</p>
+
+<p>设置套接字的<code>IP_TTL</code>选项，TTL表示“存活时间”，但是在这个上下文环境中，特指一个数据包允许经过的IP跳数。每经过一个路由器或者网关TTL的值都会减一，如果TTL被一个路由器减少到0，这个数据包将不会继续转发。在网络探针或组播应用中会需要修改TTL数值。</p>
+
+<p>The argument to <code>setTTL()</code> is a number of hops between 1 and 255.  The default on most
+systems is 64.</p>
+
+<p>在<code>setTTL()</code>调用中设置的跳数介于1到255之间，大多数系统缺省会设置为64。 </p>
+
+<h3 id="dgram.setMulticastTTL">dgram.setMulticastTTL(ttl)</h3>
+
+<p>Sets the <code>IP_MULTICAST_TTL</code> socket option.  TTL stands for "Time to Live," but in this
+context it specifies the number of IP hops that a packet is allowed to go through,
+specifically for multicast traffic.  Each router or gateway that forwards a packet
+decrements the TTL. If the TTL is decremented to 0 by a router, it will not be forwarded.</p>
+
+<p>设置套接字的<code>IP_MULTICAST_TTL</code>选项。TTL全称"Time to Live"，原指存活时间，但在这里特指在组播通信中数据包允许经过的IP跳数。每经过一个路由器或者网关TTL的值都会减一。如果TTL被一个路由器减少到0，那么该数据包将不会继续传播。</p>
+
+<p>The argument to <code>setMulticastTTL()</code> is a number of hops between 0 and 255.  The default on most
+systems is 64.</p>
+
+<p><code>setMulticastTTL()</code>的参数为1至255之间的跳数，大部分操作系统的默认值为64。</p>
+
+<h3 id="dgram.setMulticastLoopback">dgram.setMulticastLoopback(flag)</h3>
+
+<p>Sets or clears the <code>IP_MULTICAST_LOOP</code> socket option.  When this option is set, multicast
+packets will also be received on the local interface.</p>
+
+<p>设置或清除套接字的<code>IP_MULTICAST_LOOP</code>选项。当该选项生效时，多路传播的数据包也会被本地网络接口接收到。</p>
+
+<h3 id="dgram.addMembership">dgram.addMembership(multicastAddress, [multicastInterface])</h3>
+
+<p>Tells the kernel to join a multicast group with <code>IP_ADD_MEMBERSHIP</code> socket option.</p>
+
+<p>该方法通知系统内核使用<code>IP_ADD_MEMBERSHIP</code>套接字选项将套接字加入一个组播组。</p>
+
+<p>If <code>multicastAddress</code> is not specified, the OS will try to add membership to all valid
+interfaces.</p>
+
+<p>如果没有指定<code>multicastInterface</code>参数，操作系统将尝试把所有有效的网络接口加入组播组。</p>
+
+<h3 id="dgram.dropMembership">dgram.dropMembership(multicastAddress, [multicastInterface])</h3>
+
+<p>Opposite of <code>addMembership</code> - tells the kernel to leave a multicast group with
+<code>IP_DROP_MEMBERSHIP</code> socket option. This is automatically called by the kernel
+when the socket is closed or process terminates, so most apps will never need to call
+this.</p>
+
+<p>与<code>addMembership</code>相反，该方法通知系统内核使用<code>IP_DROP_MEMBERSHIP</code>选项使套接字脱离组播组。由于当套接字关闭或进程终止时该操作会自动执行，所以大部分的应用不需要手动调用该方法。</p>
+
+<p>If <code>multicastAddress</code> is not specified, the OS will try to drop membership to all valid
+interfaces.</p>
+
+<p>如果<code>multicastInterface</code>没有指定，操作系统会尝试将所有可用网络接口从组播组里脱离。</p>
+  </div>
+  <script type="text/javascript" src="res/sh_main.js" tppabs="http://cnodejs.org/cman/res/sh_main.js"></script>
+  <script type="text/javascript" src="res/sh_javascript.min.js" tppabs="http://cnodejs.org/cman/res/sh_javascript.min.js"></script>
+  <script type="text/javascript">highlight(undefined, undefined, 'pre');</script>
+</body>
+</html>

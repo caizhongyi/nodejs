@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+  <meta charset="utf-8" />
+  <title>http - Node.js Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="res/style.css" tppabs="http://cnodejs.org/cman/res/style.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="res/sh.css" tppabs="http://cnodejs.org/cman/res/sh.css" type="text/css" media="all"/>
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>Node.js Manual &amp; Documentation</h1>
+      <div id="gtoc">
+        <p><a href="index.html" tppabs="http://cnodejs.org/cman/index.html">Index</a> | <a href="all.html" tppabs="http://cnodejs.org/cman/all.html">View on single page</a></p>
+      </div>
+      <hr />
+    </header>
+    <div id="toc"><h2>Table Of Contents</h2><ul><li><a href="#hTTP_HTTP_">HTTP HTTP模块</a></li><li><a href="#http.Server">http.Server</a><ul><li><a href="#event_request_request_">Event: 'request' 事件：'request'</a></li><li><a href="#event_connection_connection_">Event: 'connection' 事件：'connection'</a></li><li><a href="#event_close_close_">Event: 'close' 事件：'close'</a></li><li><a href="#event_request_request_">Event: 'request' 事件：'request'</a></li><li><a href="#event_checkContinue_checkContinue_">Event: 'checkContinue' 事件：'checkContinue'</a></li><li><a href="#event_upgrade_upgrade_">Event: 'upgrade' 事件：'upgrade'</a></li><li><a href="#event_clientError_clientError_">Event: 'clientError' 事件：'clientError'</a></li><li><a href="#http.createServer">http.createServer(requestListener)</a></li><li><a href="#server.listen">server.listen(port, [hostname], [callback])</a></li><li><a href="#server.listen">server.listen(path, [callback])</a></li><li><a href="#server.close">server.close()</a></li></ul></li><li><a href="#http.ServerRequest">http.ServerRequest</a><ul><li><a href="#event_data_data_">Event: 'data' 事件：'data'</a></li><li><a href="#event_end_end_">Event: 'end' 事件：'end'</a></li><li><a href="#request.method">request.method</a></li><li><a href="#request.url">request.url</a></li><li><a href="#request.headers">request.headers</a></li><li><a href="#request.trailers">request.trailers</a></li><li><a href="#request.httpVersion">request.httpVersion</a></li><li><a href="#request.setEncoding">request.setEncoding(encoding=null)</a></li><li><a href="#request.pause">request.pause()</a></li><li><a href="#request.resume">request.resume()</a></li><li><a href="#request.connection">request.connection</a></li></ul></li><li><a href="#http.ServerResponse">http.ServerResponse</a><ul><li><a href="#response.writeContinue">response.writeContinue()</a></li><li><a href="#response.writeHead">response.writeHead(statusCode, [reasonPhrase], [headers])</a></li><li><a href="#response.statusCode">response.statusCode</a></li><li><a href="#response.setHeader">response.setHeader(name, value)</a></li><li><a href="#response.getHeader">response.getHeader(name)</a></li><li><a href="#response.removeHeader">response.removeHeader(name)</a></li><li><a href="#response.write">response.write(chunk, encoding='utf8')</a></li><li><a href="#response.addTrailers">response.addTrailers(headers)</a></li><li><a href="#response.end">response.end([data], [encoding])</a></li></ul></li><li><a href="#http.request">http.request(options, callback)</a></li><li><a href="#http.get">http.get(options, callback)</a></li><li><a href="#http.Agent">http.Agent</a></li><li><a href="#http.getAgent">http.getAgent(host, port)</a><ul><li><a href="#event_upgrade_upgrade_">Event: 'upgrade' 事件：'upgrade'</a></li><li><a href="#event_continue_continue_">Event: 'continue' 事件：'continue'</a></li><li><a href="#agent.maxSockets">agent.maxSockets</a></li><li><a href="#agent.sockets">agent.sockets</a></li><li><a href="#agent.queue">agent.queue</a></li></ul></li><li><a href="#http.ClientRequest">http.ClientRequest</a><ul><li><a href="#event_response_response_">Event 'response' 事件：'response'</a></li><li><a href="#request.write">request.write(chunk, encoding='utf8')</a></li><li><a href="#request.end">request.end([data], [encoding])</a></li><li><a href="#request.abort">request.abort()</a></li></ul></li><li><a href="#http.ClientResponse">http.ClientResponse</a><ul><li><a href="#event_data_data_">Event: 'data' 事件：'data'</a></li><li><a href="#event_end_end_">Event: 'end' 事件：'end'</a></li><li><a href="#response.statusCode">response.statusCode</a></li><li><a href="#response.httpVersion">response.httpVersion</a></li><li><a href="#response.headers">response.headers</a></li><li><a href="#response.trailers">response.trailers</a></li><li><a href="#response.setEncoding">response.setEncoding(encoding=null)</a></li><li><a href="#response.pause">response.pause()</a></li><li><a href="#response.resume">response.resume()</a></li></ul></li></ul><hr /></div>
+<h2 id="hTTP_HTTP_">HTTP HTTP模块</h2>
+
+<p>To use the HTTP server and client one must <code>require('http')</code>.</p>
+
+<p>如果要使用HTTP的服务器以及客户端，需使用<code>require('http')</code>加载HTTP模块。 </p>
+
+<p>The HTTP interfaces in Node are designed to support many features
+of the protocol which have been traditionally difficult to use.
+In particular, large, possibly chunk-encoded, messages. The interface is
+careful to never buffer entire requests or responses--the
+user is able to stream data.</p>
+
+<p>Node中的HTTP接口在设计时就考虑到了要支持HTTP协议的很多特性，并且使用简单。特别是可以处理那些内容庞大，有可能是块编码的消息。该接口被设计为从不缓冲整个请求或相应，这样用户就可以以流的方式处理数据。 </p>
+
+<p>HTTP message headers are represented by an object like this:</p>
+
+<p>HTTP头信息以如下对象形式表示：</p>
+
+<pre><code>{ 'content-length': '123',
+  'content-type': 'text/plain',
+  'connection': 'keep-alive',
+  'accept': '*/*' }</code></pre>
+
+<p>Keys are lowercased. Values are not modified.</p>
+
+<p>所有键名被转为小写，而值不会被修改。</p>
+
+<p>In order to support the full spectrum of possible HTTP applications, Node's
+HTTP API is very low-level. It deals with stream handling and message
+parsing only. It parses a message into headers and body but it does not
+parse the actual headers or the body.</p>
+
+<p>为了支持尽可能多的HTTP应用，Node提供非常底层的HTTP API。它只处理流相关的操作以及进行信息解析。API将信息解析为头部和正文，但并不解析实际的头部和正文内的具体内容。</p>
+
+<h2 id="http.Server">http.Server</h2>
+
+<p>This is an <code>EventEmitter</code> with the following events:</p>
+
+<p>这是一个带有如下事件的<code>EventEmitter</code>事件触发器：</p>
+
+<h3 id="event_request_request_">Event: 'request' 事件：'request'</h3>
+
+<p><code>function (request, response) { }</code></p>
+
+<p> <code>request</code> is an instance of <code>http.ServerRequest</code> and <code>response</code> is
+ an instance of <code>http.ServerResponse</code></p>
+
+<p> <code>request</code>是<code>http.ServerRequest</code>的一个实例，而<code>response</code>是<code>http.ServerResponse</code>的一个实例。</p>
+
+<h3 id="event_connection_connection_">Event: 'connection' 事件：'connection'</h3>
+
+<p><code>function (stream) { }</code></p>
+
+<p> When a new TCP stream is established. <code>stream</code> is an object of type
+ <code>net.Stream</code>. Usually users will not want to access this event. The
+ <code>stream</code> can also be accessed at <code>request.connection</code>.</p>
+
+<p> 当一个新的TCP流建立后触发此事件。<code>stream</code>是一个<code>net.Stream</code>类型的对象，通常用户不会使用这个事件。参数<code>stream</code>也可以在<code>request.connection</code>中获得。</p>
+
+<h3 id="event_close_close_">Event: 'close' 事件：'close'</h3>
+
+<p><code>function (errno) { }</code></p>
+
+<p> Emitted when the server closes.</p>
+
+<p> 当服务器关闭的时候触发此事件。 </p>
+
+<h3 id="event_request_request_">Event: 'request' 事件：'request'</h3>
+
+<p><code>function (request, response) {}</code></p>
+
+<p>Emitted each time there is request. Note that there may be multiple requests
+per connection (in the case of keep-alive connections).</p>
+
+<p>每个请求发生的时候均会被触发。请注意每个连接可能会有多个请求（在keep-alive连接情况下）。</p>
+
+<h3 id="event_checkContinue_checkContinue_">Event: 'checkContinue' 事件：'checkContinue'</h3>
+
+<p><code>function (request, response) {}</code></p>
+
+<p>Emitted each time a request with an http Expect: 100-continue is received.
+If this event isn't listened for, the server will automatically respond
+with a 100 Continue as appropriate.</p>
+
+<p>每当带有Exception: 100-continue头的请求被接收到时触发此事件。如果该事件未被监听，服务器会视情况自动的使用100 Continue应答。</p>
+
+<p>Handling this event involves calling <code>response.writeContinue</code> if the client
+should continue to send the request body, or generating an appropriate HTTP
+response (e.g., 400 Bad Request) if the client should not continue to send the
+request body.</p>
+
+<p>该事件的处理涉及两种情况，如果客户端应当继续发送请求正文，那么需要调用<code>response.writeContinue</code>，而如果客户端不应该继续发送请求正文，那么应该产生一个适当的HTTP回应（如400错误请求）。</p>
+
+<p>Note that when this event is emitted and handled, the <code>request</code> event will
+not be emitted.</p>
+
+<p>注意如果该事件被触发并处理的话，那么将不再触发<code>request</code>事件。</p>
+
+<h3 id="event_upgrade_upgrade_">Event: 'upgrade' 事件：'upgrade'</h3>
+
+<p><code>function (request, socket, head)</code></p>
+
+<p>Emitted each time a client requests a http upgrade. If this event isn't
+listened for, then clients requesting an upgrade will have their connections
+closed.</p>
+
+<p>每当一个客户端请求http upgrade时触发此消息。如果这个事件没有监听，那么请求upgrade的客户端的连接将被关闭。 </p>
+
+<ul><li><p><code>request</code> is the arguments for the http request, as it is in the request event.
+<code>request</code>代表一个http请求的相关参数，和它在request事件中的意思相同。</p></li><li><p><code>socket</code> is the network socket between the server and client.
+<code>socket</code>是在服务器与客户端之间连接使用的网络套接字。 </p></li><li><p><code>head</code> is an instance of Buffer, the first packet of the upgraded stream, this may be empty.
+<code>head</code>是一个缓冲器实例，是upgraded流的第一个包，这个缓冲器可以是空的。 </p></li></ul>
+
+<p>After this event is emitted, the request's socket will not have a <code>data</code>
+event listener, meaning you will need to bind to it in order to handle data
+sent to the server on that socket.</p>
+
+<p>当此事件被触发后，该请求所使用的套接字将不会有一个<code>data</code>事件监听器。这意味着你如果需要处理通过这个套接字发送到服务器端的数据则需要自己绑定<code>data</code>事件监听器。 </p>
+
+<h3 id="event_clientError_clientError_">Event: 'clientError' 事件：'clientError'</h3>
+
+<p><code>function (exception) {}</code></p>
+
+<p>If a client connection emits an 'error' event - it will forwarded here.</p>
+
+<p>当客户端连接出现错误时会触发'error'事件。</p>
+
+<h3 id="http.createServer">http.createServer(requestListener)</h3>
+
+<p>Returns a new web server object.</p>
+
+<p>返回一个新的web server对象。 </p>
+
+<p>The <code>requestListener</code> is a function which is automatically
+added to the <code>'request'</code> event.</p>
+
+<p>requestListener监听器会自动添加到<code>'request'</code>事件中。</p>
+
+<h3 id="server.listen">server.listen(port, [hostname], [callback])</h3>
+
+<p>Begin accepting connections on the specified port and hostname.  If the
+hostname is omitted, the server will accept connections directed to any
+IPv4 address (<code>INADDR_ANY</code>).</p>
+
+<p>在指定端口和主机名上接受连接。如果hostname没有指定，服务器将直接在此机器的所有IPV4地址上接受连接(<code>INADDR_ANY</code>)。 </p>
+
+<p>To listen to a unix socket, supply a filename instead of port and hostname.</p>
+
+<p>如果要在UNIX套接字上监听的话，则需要提供一个文件名来替换端口和主机名。 </p>
+
+<p>This function is asynchronous. The last parameter <code>callback</code> will be called
+when the server has been bound to the port.</p>
+
+<p>这个方法是一个异步的方法，当服务器已经在此端口上完成绑定后讲调用<code>callback</code>回调函数。 </p>
+
+<h3 id="server.listen">server.listen(path, [callback])</h3>
+
+<p>Start a UNIX socket server listening for connections on the given <code>path</code>.</p>
+
+<p>建立一个UNIX套接字服务器并在指定<code>path</code>路径上监听。 </p>
+
+<p>This function is asynchronous. The last parameter <code>callback</code> will be called
+when the server has been bound.</p>
+
+<p>这个方法是一个异步的方法，当服务器完成绑定后将调用<code>callback</code>回调函数。</p>
+
+<h3 id="server.close">server.close()</h3>
+
+<p>Stops the server from accepting new connections.</p>
+
+<p>使此服务器停止接受任何新连接。</p>
+
+<h2 id="http.ServerRequest">http.ServerRequest</h2>
+
+<p>This object is created internally by a HTTP server -- not by
+the user -- and passed as the first argument to a <code>'request'</code> listener.</p>
+
+<p>这个对象通常由HTTP服务器（而非用户）自动建立，并作为第一个参数传给<code>'request'</code>监听器。</p>
+
+<p>This is an <code>EventEmitter</code> with the following events:</p>
+
+<p>这是一个带有如下事件的<code>EventEmitter</code>事件触发器： </p>
+
+<h3 id="event_data_data_">Event: 'data' 事件：'data'</h3>
+
+<p><code>function (chunk) { }</code></p>
+
+<p>Emitted when a piece of the message body is received.</p>
+
+<p>当接收到信息正文中的一部分时候会触发此事件。 </p>
+
+<p>Example: A chunk of the body is given as the single
+argument. The transfer-encoding has been decoded.  The
+body chunk is a string.  The body encoding is set with
+<code>request.setBodyEncoding()</code>.</p>
+
+<p>例如：正文的数据块将作为唯一的参数传递给回调函数。此时传输编码已被解码。正文数据块是一个字符串，正文的编码由<code>request.setBodyEncoding()</code>方法设定。 </p>
+
+<h3 id="event_end_end_">Event: 'end' 事件：'end'</h3>
+
+<p><code>function () { }</code></p>
+
+<p>Emitted exactly once for each message. No arguments.  After
+emitted no other events will be emitted on the request.</p>
+
+<p>每次完全接收完信息后都会触发一次，不接受任何参数。当这个事件被触发后，将不会再触发其他事件。 </p>
+
+<h3 id="request.method">request.method</h3>
+
+<p>The request method as a string. Read only. Example:
+<code>'GET'</code>, <code>'DELETE'</code>.</p>
+
+<p>表示请求方式的只读字符串。例如<code>'GET'</code>，<code>'DELETE'</code>。 </p>
+
+<h3 id="request.url">request.url</h3>
+
+<p>Request URL string. This contains only the URL that is
+present in the actual HTTP request. If the request is:</p>
+
+<p>代表所请求URL的字符串。他仅包括实际的HTTP请求中的URL地址。如果这个请求是： </p>
+
+<pre><code>GET /status?name=ryan HTTP/1.1\r\n
+Accept: text/plain\r\n
+\r\n</code></pre>
+
+<p>Then <code>request.url</code> will be:</p>
+
+<p>则<code>request.url</code>应当是：</p>
+
+<pre><code>'/status?name=ryan'</code></pre>
+
+<p>If you would like to parse the URL into its parts, you can use
+<code>require('url').parse(request.url)</code>.  Example:</p>
+
+<p>如果你想要解析这个URL中的各个部分，可以使用<code>require('url').parse(request.url)</code>。例如： </p>
+
+<pre><code>node&gt; require('url').parse('/status?name=ryan')
+{ href: '/status?name=ryan',
+  search: '?name=ryan',
+  query: 'name=ryan',
+  pathname: '/status' }</code></pre>
+
+<p>If you would like to extract the params from the query string,
+you can use the <code>require('querystring').parse</code> function, or pass
+<code>true</code> as the second argument to <code>require('url').parse</code>.  Example:</p>
+
+<p>如果你想从查询字符串中提取所有参数，你可以使用<code>require('querystring').parse</code>方法，或者传一个<code>true</code>作为第二个参数给<code>require('url').parse</code>方法。例如：</p>
+
+<pre><code>node&gt; require('url').parse('/status?name=ryan', true)
+{ href: '/status?name=ryan',
+  search: '?name=ryan',
+  query: { name: 'ryan' },
+  pathname: '/status' }</code></pre>
+
+<h3 id="request.headers">request.headers</h3>
+
+<p>Read only.</p>
+
+<p>只读。</p>
+
+<h3 id="request.trailers">request.trailers</h3>
+
+<p>Read only; HTTP trailers (if present). Only populated after the 'end' event.</p>
+
+<p>只读，HTTP尾部（如果存在的话），只有在'end'事件被触发后该值才会被填充。</p>
+
+<h3 id="request.httpVersion">request.httpVersion</h3>
+
+<p>The HTTP protocol version as a string. Read only. Examples:
+<code>'1.1'</code>, <code>'1.0'</code>.
+Also <code>request.httpVersionMajor</code> is the first integer and
+<code>request.httpVersionMinor</code> is the second.</p>
+
+<p>只读的，以字符串形式表示HTTP协议版本。例如<code>'1.1'</code>，<code>'1.0'</code>。<code>request.httpVersionMajor</code>对应版本号的第一个数字，<code>request.httpVersionMinor</code>则对应第二个数字。 </p>
+
+<h3 id="request.setEncoding">request.setEncoding(encoding=null)</h3>
+
+<p>Set the encoding for the request body. Either <code>'utf8'</code> or <code>'binary'</code>. Defaults
+to <code>null</code>, which means that the <code>'data'</code> event will emit a <code>Buffer</code> object..</p>
+
+<p>设置此请求正文的字符编码，<code>'utf8'</code>或者<code>'binary'</code>。缺省值是<code>null</code>，这表示<code>'data'</code>事件的参数将会是一个缓冲器对象。 </p>
+
+<h3 id="request.pause">request.pause()</h3>
+
+<p>Pauses request from emitting events.  Useful to throttle back an upload.</p>
+
+<p>暂停此请求的事件触发。对于控制上传非常有用。 </p>
+
+<h3 id="request.resume">request.resume()</h3>
+
+<p>Resumes a paused request.</p>
+
+<p>恢复一个暂停的请求。</p>
+
+<h3 id="request.connection">request.connection</h3>
+
+<p>The <code>net.Stream</code> object associated with the connection.</p>
+
+<p>与当前连接相关联的<code>net.Stream</code>对象。</p>
+
+<p>With HTTPS support, use request.connection.verifyPeer() and
+request.connection.getPeerCertificate() to obtain the client's
+authentication details.</p>
+
+<p>对于使用HTTPS的连接，可使用request.connection.verifyPeer()和request.connection.getPeerCertificate()来获得客户端的认证详情。 </p>
+
+<h2 id="http.ServerResponse">http.ServerResponse</h2>
+
+<p>This object is created internally by a HTTP server--not by the user. It is
+passed as the second parameter to the <code>'request'</code> event. It is a <code>Writable Stream</code>.</p>
+
+<p>这个对象由HTTP服务器（而非用户）自动建立。它作为<code>'request'</code>事件的第二个参数，这是一个<code>Writable Stream</code>可写流。</p>
+
+<h3 id="response.writeContinue">response.writeContinue()</h3>
+
+<p>Sends a HTTP/1.1 100 Continue message to the client, indicating that
+the request body should be sent. See the the <code>checkContinue</code> event on
+<code>Server</code>.</p>
+
+<p>发送HTTP/1.1 100 Continue消息给客户端，通知客户端可以发送请求的正文。参见服务器<code>Server</code>中的<code>checkContinue</code>事件。</p>
+
+<h3 id="response.writeHead">response.writeHead(statusCode, [reasonPhrase], [headers])</h3>
+
+<p>Sends a response header to the request. The status code is a 3-digit HTTP
+status code, like <code>404</code>. The last argument, <code>headers</code>, are the response headers.
+Optionally one can give a human-readable <code>reasonPhrase</code> as the second
+argument.</p>
+
+<p>这个方法用来发送一个响应头，statusCode是一个由3位数字所构成的HTTP状态码，比如<code>404</code>之类。最后一个参数<code>headers</code>是响应头具体内容。也可以使用一个方便人们直观理解的<code>reasonPhrase</code>作为第二个参数。 </p>
+
+<p>Example:</p>
+
+<pre><code>var body = 'hello world';
+response.writeHead(200, {
+  'Content-Length': body.length,
+  'Content-Type': 'text/plain' });</code></pre>
+
+<p>This method must only be called once on a message and it must
+be called before <code>response.end()</code> is called.</p>
+
+<p>在一次请求响应中此方法只能调用一次，并且必须在调用<code>response.end()</code>之前调用。 </p>
+
+<p>If you call <code>response.write()</code> or <code>response.end()</code> before calling this, the
+implicit/mutable headers will be calculated and call this function for you.</p>
+
+<p>如果你在<code>response.write()</code>或者<code>response.end()</code>之后调用此方法，响应头的内容将是不确定而且不可知的。</p>
+
+<h3 id="response.statusCode">response.statusCode</h3>
+
+<p>When using implicit headers (not calling <code>response.writeHead()</code> explicitly), this property
+controls the status code that will be send to the client when the headers get
+flushed.</p>
+
+<p>当隐式的发送响应头信息（没有明确调用<code>response.writeHead()</code>）时，使用此属性将设置返回给客户端的状态码。状态吗将在响应头信息发送时一起被发送。</p>
+
+<p>Example:</p>
+
+<p>例如：</p>
+
+<pre><code>response.statusCode = 404;</code></pre>
+
+<h3 id="response.setHeader">response.setHeader(name, value)</h3>
+
+<p>Sets a single header value for implicit headers.  If this header already exists
+in the to-be-sent headers, it's value will be replaced.  Use an array of strings
+here if you need to send multiple headers with the same name.</p>
+
+<p>在隐式的响应头基础上设置单个头信息。如果存在同名的待发送头信息，那么该头信息的值将被替换。如果你想发送相同名字的多个头部信息，可以使用字符串数组的形式设置。</p>
+
+<p>Example:</p>
+
+<p>例如：</p>
+
+<pre><code>response.setHeader("Content-Type", "text/html");</code></pre>
+
+<p>或者</p>
+
+<pre><code>response.setHeader("Set-Cookie", ["type=ninja", "language=javascript"]);</code></pre>
+
+<h3 id="response.getHeader">response.getHeader(name)</h3>
+
+<p>Reads out a header that's already been queued but not sent to the client.  Note
+that the name is case insensitive.  This can only be called before headers get
+implicitly flushed.</p>
+
+<p>读取已经排列好但尚未发送给客户端的头部信息，注意参数名不区分大小写。此方法必须在响应头信息隐式发送之前调用。</p>
+
+<p>Example:</p>
+
+<p>例如：</p>
+
+<pre><code>var contentType = response.getHeader('content-type');</code></pre>
+
+<h3 id="response.removeHeader">response.removeHeader(name)</h3>
+
+<p>Removes a header that's queued for implicit sending.</p>
+
+<p>移除等待隐式发送的头部信息。</p>
+
+<p>Example:</p>
+
+<p>例如：</p>
+
+<pre><code>response.removeHeader("Content-Encoding");</code></pre>
+
+<h3 id="response.write">response.write(chunk, encoding='utf8')</h3>
+
+<p>If this method is called and <code>response.writeHead()</code> has not been called, it will
+switch to implicit header mode and flush the implicit headers.</p>
+
+<p>如果在<code>response.writeHead()</code>调用之前调用该函数，将会切换到隐式发送响应头信息的模式并发送隐式的头部信息。 </p>
+
+<p>This sends a chunk of the response body. This method may
+be called multiple times to provide successive parts of the body.</p>
+
+<p>它负责发送响应正文中的一部分数据，可以多次调用此方法以发送正文中多个连续的部分。</p>
+
+<p><code>chunk</code> can be a string or a buffer. If <code>chunk</code> is a string,
+the second parameter specifies how to encode it into a byte stream.
+By default the <code>encoding</code> is <code>'utf8'</code>.</p>
+
+<p><code>chunk</code>可以是一个字符串或者一个缓冲器。如果<code>chunk</code>是一个字符串，则第二个参数指定用何种编码方式将字符串编码为字节流。缺省情况下，<code>encoding</code>为<code>'utf8'</code>。 </p>
+
+<p><strong>Note</strong>: This is the raw HTTP body and has nothing to do with
+higher-level multi-part body encodings that may be used.</p>
+
+<p><strong>注意</strong>：这是一个原始格式HTTP正文，和高层协议中的多段正文编码格式无关。 </p>
+
+<p>The first time <code>response.write()</code> is called, it will send the buffered
+header information and the first body to the client. The second time
+<code>response.write()</code> is called, Node assumes you're going to be streaming
+data, and sends that separately. That is, the response is buffered up to the
+first chunk of body.</p>
+
+<p>第一次调用<code>response.write()</code>时，此方法会将已经缓冲的消息头和第一块正文发送给客户。 当第二次调用<code>response.write()</code>的时候，Node将假定你想要逐次发送流数据。换句话说，响应被缓冲直到正文的第一块被发送。 </p>
+
+<h3 id="response.addTrailers">response.addTrailers(headers)</h3>
+
+<p>This method adds HTTP trailing headers (a header but at the end of the
+message) to the response.</p>
+
+<p>该方法在响应中添加HTTP尾部头信息（在消息尾部的头信息）。</p>
+
+<p>Trailers will <strong>only</strong> be emitted if chunked encoding is used for the
+response; if it is not (e.g., if the request was HTTP/1.0), they will
+be silently discarded.</p>
+
+<p><strong>仅当</strong>响应报文使用chunked编码时，尾部信息才会发送；否则（例如请求的协议版本为HTTP/1.0）它们会被抛弃而没有提示。</p>
+
+<p>Note that HTTP requires the <code>Trailer</code> header to be sent if you intend to
+emit trailers, with a list of the header fields in its value. E.g.,</p>
+
+<p>注意如果你想发送尾部信息，则需要在HTTP头中添加<code>Trailer</code>。</p>
+
+<pre><code>response.writeHead(200, { 'Content-Type': 'text/plain',
+                          'Trailer': 'TraceInfo' });
+response.write(fileData);
+response.addTrailers({'Content-MD5': "7895bf4b8828b55ceaf47747b4bca667"});
+response.end();</code></pre>
+
+<h3 id="response.end">response.end([data], [encoding])</h3>
+
+<p>This method signals to the server that all of the response headers and body
+has been sent; that server should consider this message complete.
+The method, <code>response.end()</code>, MUST be called on each
+response.</p>
+
+<p>这个方法通知服务器所有的响应头和响应正文都已经发出；服务器在此调用后认为这条信息已经发送完毕。在每个响应上都必须调用<code>response.end()</code>方法。 </p>
+
+<p>If <code>data</code> is specified, it is equivalent to calling <code>response.write(data, encoding)</code>
+followed by <code>response.end()</code>.</p>
+
+<p>如果指定了<code>data</code>参数，就相当先调用<code>response.write(data, encoding)</code>再调用<code>response.end()</code>。</p>
+
+<h2 id="http.request">http.request(options, callback)</h2>
+
+<p>Node maintains several connections per server to make HTTP requests.
+This function allows one to transparently issue requests.</p>
+
+<p>Node为一个目标服务器维护多个连接用于HTTP请求。通过这个方法可以向服务器发送请求。</p>
+
+<p>Options:</p>
+
+<p>选项：</p>
+
+<ul><li><p><code>host</code>: A domain name or IP address of the server to issue the request to.
+<code>host</code>: 请求的服务器域名或者IP地址。</p></li><li><p><code>port</code>: Port of remote server.
+<code>port</code>: 远端服务器的端口。</p></li><li><p><code>method</code>: A string specifying the HTTP request method. Possible values:
+<code>'GET'</code> (default), <code>'POST'</code>, <code>'PUT'</code>, and <code>'DELETE'</code>.
+<code>method</code>: 指定HTTP请求的方法类型，可选的值有：<code>'GET'</code>（默认），<code>'POST'</code>，<code>'PUT'</code>，以及<code>'DELETE'</code>。</p></li><li><p><code>path</code>: Request path. Should include query string and fragments if any.
+E.G. <code>'/index.html?page=12'</code>
+<code>path</code>: 请求地址，可包含查询字符串以及可能存在的锚点。例如<code>'/index.html?page=12'</code>。</p></li><li><p><code>headers</code>: An object containing request headers.
+<code>headers</code>: 一个包含请求头的对象。</p></li></ul>
+
+<p><code>http.request()</code> returns an instance of the <code>http.ClientRequest</code>
+class. The <code>ClientRequest</code> instance is a writable stream. If one needs to
+upload a file with a POST request, then write to the <code>ClientRequest</code> object.</p>
+
+<p><code>http.request()</code>函数返回<code>http.ClientRequest</code>类的一个实例。<code>ClientRequest</code>对象是一个可写流，如果你需要用POST方法上传一个文件，可将其写入到<code>ClientRequest</code>对象中。</p>
+
+<p>Example:</p>
+
+<p>例子：</p>
+
+<pre><code>var options = {
+  host: 'www.google.com',
+  port: 80,
+  path: '/upload',
+  method: 'POST'
+};
+
+var req = http.request(options, function(res) {
+  console.log('STATUS: ' + res.statusCode);
+  console.log('HEADERS: ' + JSON.stringify(res.headers));
+  res.setEncoding('utf8');
+  res.on('data', function (chunk) {
+    console.log('BODY: ' + chunk);
+  });
+});
+
+// write data to request body
+req.write('data\n');
+req.write('data\n');
+req.end();</code></pre>
+
+<p>Note that in the example <code>req.end()</code> was called. With <code>http.request()</code> one
+must always call <code>req.end()</code> to signify that you're done with the request -
+even if there is no data being written to the request body.</p>
+
+<p>注意这个例子中<code>req.end()</code>被调用了。无论请求正文是否包含数据，每一次调用<code>http.request()</code>最后都需要调用一次<code>req.end()</code>表示已经完成了请求。</p>
+
+<p>If any error is encountered during the request (be that with DNS resolution,
+TCP level errors, or actual HTTP parse errors) an <code>'error'</code> event is emitted
+on the returned request object.</p>
+
+<p>如果在请求过程中出现了错误（可能是DNS解析、TCP的错误、或者HTTP解析错误），返回的请求对象上的<code>'error'</code>的事件将被触发。</p>
+
+<p>There are a few special headers that should be noted.</p>
+
+<p>如下特别的消息头应当注意：</p>
+
+<ul><li><p>Sending a 'Connection: keep-alive' will notify Node that the connection to
+the server should be persisted until the next request.</p><p>发送'Connection: keep-alive'头部将通知Node此连接将保持到下一此请求。</p></li><li><p>Sending a 'Content-length' header will disable the default chunked encoding.</p><p>发送'Content-length'头将使默认的分块编码无效。</p></li><li><p>Sending an 'Expect' header will immediately send the request headers.
+Usually, when sending 'Expect: 100-continue', you should both set a timeout
+and listen for the <code>continue</code> event. See RFC2616 Section 8.2.3 for more
+information.</p><p>发送'Expect'头部将引起请求头部立即被发送。通常情况，当发送'Expect: 100-continue'时，你需要监听<code>continue</code>事件的同时设置超时。参见RFC2616 8.2.3章节以获得更多的信息。</p></li></ul>
+
+<h2 id="http.get">http.get(options, callback)</h2>
+
+<p>Since most requests are GET requests without bodies, Node provides this
+convenience method. The only difference between this method and <code>http.request()</code> is
+that it sets the method to GET and calls <code>req.end()</code> automatically.</p>
+
+<p>由于大部分请求是不包含正文的GET请求，Node提供了这个方便的方法。与<code>http.request()</code>唯一的区别是此方法将请求方式设置为GET，并且自动调用<code>req.end()</code>。</p>
+
+<p>Example:</p>
+
+<p>例子：</p>
+
+<pre><code>var options = {
+  host: 'www.google.com',
+  port: 80,
+  path: '/index.html'
+};
+
+http.get(options, function(res) {
+  console.log("Got response: " + res.statusCode);
+}).on('error', function(e) {
+  console.log("Got error: " + e.message);
+});</code></pre>
+
+<h2 id="http.Agent">http.Agent</h2>
+
+<h2 id="http.getAgent">http.getAgent(host, port)</h2>
+
+<p><code>http.request()</code> uses a special <code>Agent</code> for managing multiple connections to
+an HTTP server. Normally <code>Agent</code> instances should not be exposed to user
+code, however in certain situations it's useful to check the status of the
+agent. The <code>http.getAgent()</code> function allows you to access the agents.</p>
+
+<p><code>http.request()</code>使用一个特别的<code>Agent</code>代理来管理到一个服务器的多个连接，通常<code>Agent</code>对象不应该暴露给用户。但在某些特定的情况下，检测代理的状态是非常有用的。<code>http.getAgent()</code>函数允许你访问代理对象。</p>
+
+<h3 id="event_upgrade_upgrade_">Event: 'upgrade' 事件：'upgrade'</h3>
+
+<p><code>function (request, socket, head)</code></p>
+
+<p>Emitted each time a server responds to a request with an upgrade. If this event
+isn't being listened for, clients receiving an upgrade header will have their
+connections closed.</p>
+
+<p>当服务器响应upgrade请求时触发此事件。如果这个事件没有被监听，客户端接收到upgrade头会导致连接被关闭。</p>
+
+<p>See the description of the <code>upgrade</code> event for <code>http.Server</code> for further details.</p>
+
+<p>可以查看http.Server关于upgrade事件的解释来了解更多内容。 </p>
+
+<h3 id="event_continue_continue_">Event: 'continue' 事件：'continue'</h3>
+
+<p><code>function ()</code></p>
+
+<p>Emitted when the server sends a '100 Continue' HTTP response, usually because
+the request contained 'Expect: 100-continue'. This is an instruction that
+the client should send the request body.</p>
+
+<p>当服务器发送'100 Continue'答复时触发此事件，这通常是因为请求头信息中包含'Expect: 100-continue'。此事件指示客户端可是开始发送请求正文了。</p>
+
+<h3 id="agent.maxSockets">agent.maxSockets</h3>
+
+<p>By default set to 5. Determines how many concurrent sockets the agent can have open.</p>
+
+<p>默认值为5，指定代理能同时并发打开的套接字数量。</p>
+
+<h3 id="agent.sockets">agent.sockets</h3>
+
+<p>An array of sockets currently in use by the Agent. Do not modify.</p>
+
+<p>当前代理使用的套接字数组，不能更改。</p>
+
+<h3 id="agent.queue">agent.queue</h3>
+
+<p>A queue of requests waiting to be sent to sockets.</p>
+
+<p>待发送到套接字的请求队列。</p>
+
+<h2 id="http.ClientRequest">http.ClientRequest</h2>
+
+<p>This object is created internally and returned from <code>http.request()</code>.  It
+represents an <em>in-progress</em> request whose header has already been queued.  The 
+header is still mutable using the <code>setHeader(name, value)</code>, <code>getHeader(name)</code>,
+<code>removeHeader(name)</code> API.  The actual header will be sent along with the first
+data chunk or when closing the connection.</p>
+
+<p>这个对象是在调用<code>http.request()</code>时产生并返回的。它表示一个<em>正在进行</em>中且头部信息已经排列好了的请求。这时候通过<code>setHeader(name, value)</code>，<code>getHeader(name)</code>，<code>removeHeader(name)</code>这些API还可以改变头部信息，实际的头部信息将随着第一块数据发送，或者在关闭连接时发送出去。</p>
+
+<p>To get the response, add a listener for <code>'response'</code> to the request object.
+<code>'response'</code> will be emitted from the request object when the response
+headers have been received.  The <code>'response'</code> event is executed with one
+argument which is an instance of <code>http.ClientResponse</code>.</p>
+
+<p>为了获得响应，为请求对象增加一个对响应的监听器。</p>
+
+<p>During the <code>'response'</code> event, one can add listeners to the
+response object; particularly to listen for the <code>'data'</code> event. Note that
+the <code>'response'</code> event is called before any part of the response body is received,
+so there is no need to worry about racing to catch the first part of the
+body. As long as a listener for <code>'data'</code> is added during the <code>'response'</code>
+event, the entire body will be caught.</p>
+
+<p>在<code>'response'</code>事件中，可以给响应对象添加监听器，特别是监听<code>'data'</code>事件，注意<code>'response'</code>事件在正文接收之前就已经被调用，所以不需要担心捕获不到正文的第一部分，一旦在<code>'response'</code>事件中添加了对<code>'data'</code>的监听器，那么整个正文将被捕获。</p>
+
+<pre><code>// Good
+request.on('response', function (response) {
+  response.on('data', function (chunk) {
+    console.log('BODY: ' + chunk);
+  });
+});
+
+// Bad - misses all or part of the body
+request.on('response', function (response) {
+  setTimeout(function () {
+    response.on('data', function (chunk) {
+      console.log('BODY: ' + chunk);
+    });
+  }, 10);
+});</code></pre>
+
+<p>This is a <code>Writable Stream</code>.</p>
+
+<p>这是一个<code>Writable Stream</code>可写流。</p>
+
+<p>This is an <code>EventEmitter</code> with the following events:</p>
+
+<p>这是一个包含下述事件的<code>EventEmitter</code>事件触发器：</p>
+
+<h3 id="event_response_response_">Event 'response' 事件：'response'</h3>
+
+<p><code>function (response) { }</code></p>
+
+<p>Emitted when a response is received to this request. This event is emitted only once. The
+<code>response</code> argument will be an instance of <code>http.ClientResponse</code>.</p>
+
+<p>当请求的响应到达时触发，该事件仅触发一次。<code>response</code>参数是<code>http.ClientResponse</code>的一个实例。</p>
+
+<h3 id="request.write">request.write(chunk, encoding='utf8')</h3>
+
+<p>Sends a chunk of the body.  By calling this method
+many times, the user can stream a request body to a
+server--in that case it is suggested to use the
+<code>['Transfer-Encoding', 'chunked']</code> header line when
+creating the request.</p>
+
+<p>发送正文中的一块。用户可以通过多次调用这个方法将请求正文以流的方式发送到服务器。此种情况建议在建立请求时使用<code>['Transfer-Encoding', 'chunked']</code>请求头。 </p>
+
+<p>The <code>chunk</code> argument should be an array of integers
+or a string.</p>
+
+<p>参数<code>chunk</code>应当是一个整数数组或字符串。 </p>
+
+<p>The <code>encoding</code> argument is optional and only
+applies when <code>chunk</code> is a string.</p>
+
+<p>参数<code>encoding</code>是可选的，仅在<code>chunk</code>为字符串时可用。 </p>
+
+<h3 id="request.end">request.end([data], [encoding])</h3>
+
+<p>Finishes sending the request. If any parts of the body are
+unsent, it will flush them to the stream. If the request is
+chunked, this will send the terminating <code>'0\r\n\r\n'</code>.</p>
+
+<p>完成本次请求的发送。如果正文中的任何一个部分没有来得及发送，将把他们全部刷新到流中。如果本次请求是分块的，这个函数将发出结束字符<code>'0\r\n\r\n'</code>。 </p>
+
+<p>If <code>data</code> is specified, it is equivalent to calling <code>request.write(data, encoding)</code>
+followed by <code>request.end()</code>.</p>
+
+<p>如果使用参数data，就等于在调用request.write(data, encoding)之后紧接着调用request.end()。 </p>
+
+<h3 id="request.abort">request.abort()</h3>
+
+<p>Aborts a request.  (New since v0.3.8.)</p>
+
+<p>阻止一个请求。（v0.3.8中新增的方法。）</p>
+
+<h2 id="http.ClientResponse">http.ClientResponse</h2>
+
+<p>This object is created when making a request with <code>http.request()</code>. It is
+passed to the <code>'response'</code> event of the request object.</p>
+
+<p>这个对象在使用<code>http.request()</code>发起请求时被创建，它会以参数的形式传递给request对象的<code>'response'</code>事件。 </p>
+
+<p>The response implements the <code>Readable Stream</code> interface.</p>
+
+<p>'response'实现了可读流的接口。</p>
+
+<h3 id="event_data_data_">Event: 'data' 事件：'data'</h3>
+
+<p><code>function (chunk) {}</code></p>
+
+<p>Emitted when a piece of the message body is received.</p>
+
+<p>当接收到消息正文一部分的时候触发。 </p>
+
+<h3 id="event_end_end_">Event: 'end' 事件：'end'</h3>
+
+<p><code>function () {}</code></p>
+
+<p>Emitted exactly once for each message. No arguments. After
+emitted no other events will be emitted on the response.</p>
+
+<p>对每次消息请求只触发一次，该事件被触发后将不会再有任何事件在响应中被触发。</p>
+
+<h3 id="response.statusCode">response.statusCode</h3>
+
+<p>The 3-digit HTTP response status code. E.G. <code>404</code>.</p>
+
+<p>3个数字组成的HTTP响应状态吗。例如<code>404</code>。</p>
+
+<h3 id="response.httpVersion">response.httpVersion</h3>
+
+<p>The HTTP version of the connected-to server. Probably either
+<code>'1.1'</code> or <code>'1.0'</code>.
+Also <code>response.httpVersionMajor</code> is the first integer and
+<code>response.httpVersionMinor</code> is the second.</p>
+
+<p>连接至服务器端的HTTP版本，可能的值为<code>'1.1'</code> or <code>'1.0'</code>，你也可以使用<code>response.httpVersionMajor</code>获得版本号第一位，使用<code>response.httpVersionMinor</code>获得版本号第二位。</p>
+
+<h3 id="response.headers">response.headers</h3>
+
+<p>The response headers object.</p>
+
+<p>响应头部对象。</p>
+
+<h3 id="response.trailers">response.trailers</h3>
+
+<p>The response trailers object. Only populated after the 'end' event.</p>
+
+<p>响应尾部对象，在'end'事件发生后填充该对象。</p>
+
+<h3 id="response.setEncoding">response.setEncoding(encoding=null)</h3>
+
+<p>Set the encoding for the response body. Either <code>'utf8'</code>, <code>'ascii'</code>, or <code>'base64'</code>.
+Defaults to <code>null</code>, which means that the <code>'data'</code> event will emit a <code>Buffer</code> object..</p>
+
+<p>设置响应正文的编码，可以是<code>'utf8'</code>，<code>'ascii'</code>，或者<code>'base64'</code>。默认值为<code>null</code>，此种情况下<code>'data'</code>事件将发送缓冲器对象。</p>
+
+<h3 id="response.pause">response.pause()</h3>
+
+<p>Pauses response from emitting events.  Useful to throttle back a download.</p>
+
+<p>暂停响应的事件激发，对控制下载流量非常有用。</p>
+
+<h3 id="response.resume">response.resume()</h3>
+
+<p>Resumes a paused response.</p>
+
+<p>恢复一个已经暂停的响应。</p>
+  </div>
+  <script type="text/javascript" src="res/sh_main.js" tppabs="http://cnodejs.org/cman/res/sh_main.js"></script>
+  <script type="text/javascript" src="res/sh_javascript.min.js" tppabs="http://cnodejs.org/cman/res/sh_javascript.min.js"></script>
+  <script type="text/javascript">highlight(undefined, undefined, 'pre');</script>
+</body>
+</html>

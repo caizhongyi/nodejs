@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+  <meta charset="utf-8" />
+  <title>events - Node.js Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="res/style.css" tppabs="http://cnodejs.org/cman/res/style.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="res/sh.css" tppabs="http://cnodejs.org/cman/res/sh.css" type="text/css" media="all"/>
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>Node.js Manual &amp; Documentation</h1>
+      <div id="gtoc">
+        <p><a href="index.html" tppabs="http://cnodejs.org/cman/index.html">Index</a> | <a href="all.html" tppabs="http://cnodejs.org/cman/all.html">View on single page</a></p>
+      </div>
+      <hr />
+    </header>
+    <div id="toc"><h2>Table Of Contents</h2><ul><li><a href="#events_">Events 事件模块</a><ul><li><a href="#events.EventEmitter">events.EventEmitter</a><ul><li><a href="#emitter.addListener">emitter.addListener(event, listener)</a></li><li><a href="#emitter.on">emitter.on(event, listener)</a></li><li><a href="#emitter.once">emitter.once(event, listener)</a></li><li><a href="#emitter.removeListener">emitter.removeListener(event, listener)</a></li><li><a href="#emitter.removeAllListeners">emitter.removeAllListeners(event)</a></li><li><a href="#emitter.setMaxListeners">emitter.setMaxListeners(n)</a></li><li><a href="#emitter.listeners">emitter.listeners(event)</a></li><li><a href="#emitter.emit">emitter.emit(event, [arg1], [arg2], [...])</a></li><li><a href="#event_newListener_newListener_">Event: 'newListener' 事件：'newListener'</a></li></ul></li></ul></li></ul><hr /></div>
+<h2 id="events_">Events 事件模块</h2>
+
+<p>Many objects in Node emit events: a <code>net.Server</code> emits an event each time
+a peer connects to it, a <code>fs.readStream</code> emits an event when the file is
+opened. All objects which emit events are instances of <code>events.EventEmitter</code>.
+You can access this module by doing: <code>require("events");</code></p>
+
+<p>Node引擎中很多对象都会触发事件：例如<code>net.Server</code>会在每一次有客户端连接到它时触发事件，又如<code>fs.readStream</code>会在文件打开时触发事件。所有能够触发事件的对象都是<code>events.EventEmitter</code>的实例。你可以通过<code>require("events");</code>访问这个模块。</p>
+
+<p>Typically, event names are represented by a camel-cased string, however,
+there aren't any strict restrictions on that, as any string will be accepted.</p>
+
+<p>通常情况下，事件名称采用驼峰式写法，不过目前并没有对事件名称作任何的限制，也就是说任何的字符串都可以被接受。</p>
+
+<p>Functions can then be attached to objects, to be executed when an event
+is emitted. These functions are called <em>listeners</em>.</p>
+
+<p>可以将函数注册给对象，使其在事件触发时执行，此类函数被称作<em>监听器</em>。</p>
+
+<h3 id="events.EventEmitter">events.EventEmitter</h3>
+
+<p>To access the EventEmitter class, <code>require('events').EventEmitter</code>.</p>
+
+<p>通过调用<code>require('events').EventEmitter</code>，我们可以使用事件触发器类。 </p>
+
+<p>When an <code>EventEmitter</code> instance experiences an error, the typical action is
+to emit an <code>'error'</code> event.  Error events are treated as a special case in node.
+If there is no listener for it, then the default action is to print a stack
+trace and exit the program.</p>
+
+<p>当<code>EventEmitter</code>事件触发器遇到错误时，典型的处理方式是它将触发一个<code>'error'</code>事件。Error事件的特殊性在于：如果没有函数处理这个事件，它将会输出调用堆栈，并随之退出应用程序。</p>
+
+<p>All EventEmitters emit the event <code>'newListener'</code> when new listeners are
+added.</p>
+
+<p>当新的事件监听器被添加时，所有的事件触发器都将触发名为<code>'newListener'</code>的事件。</p>
+
+<h4 id="emitter.addListener">emitter.addListener(event, listener)</h4>
+
+<h4 id="emitter.on">emitter.on(event, listener)</h4>
+
+<p>Adds a listener to the end of the listeners array for the specified event.</p>
+
+<p>将一个监听器添加到指定事件的监听器数组的末尾。</p>
+
+<pre><code>server.on('connection', function (stream) {
+  console.log('someone connected!');
+});</code></pre>
+
+<h4 id="emitter.once">emitter.once(event, listener)</h4>
+
+<p>Adds a <strong>one time</strong> listener for the event. The listener is
+invoked only the first time the event is fired, after which
+it is removed.</p>
+
+<p>为事件添加<strong>一次性</strong>的监听器。该监听器在事件第一次触发时执行，过后将被移除。</p>
+
+<pre><code>server.once('connection', function (stream) {
+  console.log('Ah, we have our first user!');
+});</code></pre>
+
+<h4 id="emitter.removeListener">emitter.removeListener(event, listener)</h4>
+
+<p>Remove a listener from the listener array for the specified event.
+<strong>Caution</strong>: changes array indices in the listener array behind the listener.</p>
+
+<p>将监听器从指定事件的监听器数组中移除出去。
+<strong>小心</strong>：此操作将改变监听器数组的下标。</p>
+
+<pre><code>var callback = function(stream) {
+  console.log('someone connected!');
+};
+server.on('connection', callback);
+// ...
+server.removeListener('connection', callback);</code></pre>
+
+<h4 id="emitter.removeAllListeners">emitter.removeAllListeners(event)</h4>
+
+<p>Removes all listeners from the listener array for the specified event.</p>
+
+<p>将指定事件的所有监听器从监听器数组中移除。</p>
+
+<h4 id="emitter.setMaxListeners">emitter.setMaxListeners(n)</h4>
+
+<p>By default EventEmitters will print a warning if more than 10 listeners are
+added to it. This is a useful default which helps finding memory leaks.
+Obviously not all Emitters should be limited to 10. This function allows
+that to be increased. Set to zero for unlimited.</p>
+
+<p>默认情况下当事件触发器注册了超过10个以上的监听器时系统会打印警告信息，这个默认配置将有助于你查找内存泄露问题。很显然并不是所有的事件触发器都需要进行10个监听器的限制，此函数允许你手动设置该数量值，如果值为0意味值没有限制。</p>
+
+<h4 id="emitter.listeners">emitter.listeners(event)</h4>
+
+<p>Returns an array of listeners for the specified event. This array can be
+manipulated, e.g. to remove listeners.</p>
+
+<p>返回指定事件的监听器数组对象，你可以对该数组进行操作，比如说删除监听器等。</p>
+
+<pre><code>server.on('connection', function (stream) {
+  console.log('someone connected!');
+});
+console.log(util.inspect(server.listeners('connection')); // [ [Function] ]</code></pre>
+
+<h4 id="emitter.emit">emitter.emit(event, [arg1], [arg2], [...])</h4>
+
+<p>Execute each of the listeners in order with the supplied arguments.</p>
+
+<p>以提供的参数作为监听器函数的参数，顺序执行监听器列表中的每个监听器函数。</p>
+
+<h4 id="event_newListener_newListener_">Event: 'newListener' 事件：'newListener'</h4>
+
+<p><code>function (event, listener) { }</code></p>
+
+<p>This event is emitted any time someone adds a new listener.</p>
+
+<p>任何时候只要新的监听器被添加时该事件就会触发。</p>
+  </div>
+  <script type="text/javascript" src="res/sh_main.js" tppabs="http://cnodejs.org/cman/res/sh_main.js"></script>
+  <script type="text/javascript" src="res/sh_javascript.min.js" tppabs="http://cnodejs.org/cman/res/sh_javascript.min.js"></script>
+  <script type="text/javascript">highlight(undefined, undefined, 'pre');</script>
+</body>
+</html>

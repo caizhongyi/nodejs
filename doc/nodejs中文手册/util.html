@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+  <meta charset="utf-8" />
+  <title>util - Node.js Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="res/style.css" tppabs="http://cnodejs.org/cman/res/style.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="res/sh.css" tppabs="http://cnodejs.org/cman/res/sh.css" type="text/css" media="all"/>
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>Node.js Manual &amp; Documentation</h1>
+      <div id="gtoc">
+        <p><a href="index.html" tppabs="http://cnodejs.org/cman/index.html">Index</a> | <a href="all.html" tppabs="http://cnodejs.org/cman/all.html">View on single page</a></p>
+      </div>
+      <hr />
+    </header>
+    <div id="toc"><h2>Table Of Contents</h2><ul><li><a href="#util_">util 工具模块</a><ul><li><a href="#util.debug">util.debug(string)</a></li><li><a href="#util.log">util.log(string)</a></li><li><a href="#util.inspect">util.inspect(object, showHidden=false, depth=2)</a></li><li><a href="#util.pump">util.pump(readableStream, writableStream, [callback])</a></li><li><a href="#util.inherits">util.inherits(constructor, superConstructor)</a></li></ul></li></ul><hr /></div>
+<h2 id="util_">util 工具模块</h2>
+
+<p>These functions are in the module <code>'util'</code>. Use <code>require('util')</code> to access
+them.</p>
+
+<p>下列函数属于<code>'util'</code>（工具）模块，可使用<code>require('util')</code>访问它们。</p>
+
+<h3 id="util.debug">util.debug(string)</h3>
+
+<p>A synchronous output function. Will block the process and
+output <code>string</code> immediately to <code>stderr</code>.</p>
+
+<p>这是一个同步输出函数，将<code>string</code>参数的内容实时输出到<code>stderr</code>标准错误。调用此函数时将阻塞当前进程直到输出完成。</p>
+
+<pre><code>require('util').debug('message on stderr');</code></pre>
+
+<h3 id="util.log">util.log(string)</h3>
+
+<p>Output with timestamp on <code>stdout</code>.</p>
+
+<p>将<code>string</code>参数的内容加上当前时间戳，输出到<code>stdout</code>标准输出。</p>
+
+<pre><code>require('util').log('Timestmaped message.');</code></pre>
+
+<h3 id="util.inspect">util.inspect(object, showHidden=false, depth=2)</h3>
+
+<p>Return a string representation of <code>object</code>, which is useful for debugging.</p>
+
+<p>以字符串形式返回<code>object</code>对象的结构信息，这对程序调试非常有帮助。</p>
+
+<p>If <code>showHidden</code> is <code>true</code>, then the object's non-enumerable properties will be
+shown too.</p>
+
+<p>如果<code>showHidden</code>参数设置为<code>true</code>，则此对象的不可枚举属性也会被显示。</p>
+
+<p>If <code>depth</code> is provided, it tells <code>inspect</code> how many times to recurse while
+formatting the object. This is useful for inspecting large complicated objects.</p>
+
+<p>可使用<code>depth</code>参数指定<code>inspect</code>函数在格式化对象信息时的递归次数。这对分析复杂对象的内部结构非常有帮助。</p>
+
+<p>The default is to only recurse twice.  To make it recurse indefinitely, pass
+in <code>null</code> for <code>depth</code>.</p>
+
+<p>默认情况下递归两次，如果想要无限递归可将<code>depth</code>参数设为<code>null</code>。</p>
+
+<p>Example of inspecting all properties of the <code>util</code> object:</p>
+
+<p>显示<code>util</code>对象所有属性的例子如下：</p>
+
+<pre><code>var util = require('util');
+
+console.log(util.inspect(util, true, null));</code></pre>
+
+<h3 id="util.pump">util.pump(readableStream, writableStream, [callback])</h3>
+
+<p>Experimental</p>
+
+<p>实验性的</p>
+
+<p>Read the data from <code>readableStream</code> and send it to the <code>writableStream</code>.
+When <code>writableStream.write(data)</code> returns <code>false</code> <code>readableStream</code> will be
+paused until the <code>drain</code> event occurs on the <code>writableStream</code>. <code>callback</code> gets
+an error as its only argument and is called when <code>writableStream</code> is closed or
+when an error occurs.</p>
+
+<p>从<code>readableStream</code>参数所指定的可读流中读取数据，并将其写入到<code>writableStream</code>参数所指定的可写流中。当<code>writeableStream.write(data)</code>函数调用返回为<code>false</code>时，<code>readableStream</code>流将被暂停，直到在<code>writableStream</code>流上发生<code>drain</code>事件。当<code>writableStream</code>流被关闭或发生一个错误时，<code>callback</code>回调函数被调用。此回调函数只接受一个参数用以指明所发生的错误。</p>
+
+<h3 id="util.inherits">util.inherits(constructor, superConstructor)</h3>
+
+<p>Inherit the prototype methods from one
+<a href="javascript:if(confirm('https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/constructor  \n\n���ļ��޷��� Teleport Ultra ����, ��Ϊ ����һ�����·���ⲿ������Ϊ������ʼ��ַ�ĵ�ַ��  \n\n�����ڷ������ϴ���?'))window.location='https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/constructor'" tppabs="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/constructor">constructor</a>
+into another.  The prototype of <code>constructor</code> will be set to a new
+object created from <code>superConstructor</code>.</p>
+
+<p>将一个<a href="javascript:if(confirm('https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/constructor  \n\n���ļ��޷��� Teleport Ultra ����, ��Ϊ ����һ�����·���ⲿ������Ϊ������ʼ��ַ�ĵ�ַ��  \n\n�����ڷ������ϴ���?'))window.location='https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/constructor'" tppabs="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/constructor">构造函数</a>的原型方法继承到另一个构造函数中。<code>constructor</code>构造函数的原型将被设置为使用<code>superConstructor</code>构造函数所创建的一个新对象。</p>
+
+<p>As an additional convenience, <code>superConstructor</code> will be accessible
+through the <code>constructor.super_</code> property.</p>
+
+<p>此方法带来的额外的好处是，可以通过<code>constructor.super_</code>属性来访问<code>superConstructor</code>构造函数。</p>
+
+<pre><code>var util = require("util");
+var events = require("events");
+
+function MyStream() {
+    events.EventEmitter.call(this);
+}
+
+util.inherits(MyStream, events.EventEmitter);
+
+MyStream.prototype.write = function(data) {
+    this.emit("data", data);
+}
+
+var stream = new MyStream();
+
+console.log(stream instanceof events.EventEmitter); // true
+console.log(MyStream.super_ === events.EventEmitter); // true
+
+stream.on("data", function(data) {
+    console.log('Received data: "' + data + '"');
+})
+stream.write("It works!"); // Received data: "It works!"</code></pre>
+  </div>
+  <script type="text/javascript" src="res/sh_main.js" tppabs="http://cnodejs.org/cman/res/sh_main.js"></script>
+  <script type="text/javascript" src="res/sh_javascript.min.js" tppabs="http://cnodejs.org/cman/res/sh_javascript.min.js"></script>
+  <script type="text/javascript">highlight(undefined, undefined, 'pre');</script>
+</body>
+</html>

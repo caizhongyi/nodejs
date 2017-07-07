@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+  <meta charset="utf-8" />
+  <title>timers - Node.js Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="res/style.css" tppabs="http://cnodejs.org/cman/res/style.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="res/sh.css" tppabs="http://cnodejs.org/cman/res/sh.css" type="text/css" media="all"/>
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>Node.js Manual &amp; Documentation</h1>
+      <div id="gtoc">
+        <p><a href="index.html" tppabs="http://cnodejs.org/cman/index.html">Index</a> | <a href="all.html" tppabs="http://cnodejs.org/cman/all.html">View on single page</a></p>
+      </div>
+      <hr />
+    </header>
+    <div id="toc"><h2>Table Of Contents</h2><ul><li><a href="#timers_">Timers 定时器</a><ul><li><a href="#setTimeout">setTimeout(callback, delay, [arg], [...])</a></li><li><a href="#clearTimeout">clearTimeout(timeoutId)</a></li><li><a href="#setInterval">setInterval(callback, delay, [arg], [...])</a></li><li><a href="#clearInterval">clearInterval(intervalId)</a></li></ul></li></ul><hr /></div>
+<h2 id="timers_">Timers 定时器</h2>
+
+<h3 id="setTimeout">setTimeout(callback, delay, [arg], [...])</h3>
+
+<p>To schedule execution of <code>callback</code> after <code>delay</code> milliseconds. Returns a
+<code>timeoutId</code> for possible use with <code>clearTimeout()</code>. Optionally, you can
+also pass arguments to the callback.</p>
+
+<p>设定一个<code>delay</code>毫秒后执行<code>callback</code>回调函数的计划。返回值<code>timeoutId</code>可被用于<code>clearTimeout()</code>。可以设定要传递给回调函数的参数。</p>
+
+<h3 id="clearTimeout">clearTimeout(timeoutId)</h3>
+
+<p>Prevents a timeout from triggering.</p>
+
+<p>清除定时器，阻止指定的timeout（超时）定时器被触发。</p>
+
+<h3 id="setInterval">setInterval(callback, delay, [arg], [...])</h3>
+
+<p>To schedule the repeated execution of <code>callback</code> every <code>delay</code> milliseconds.
+Returns a <code>intervalId</code> for possible use with <code>clearInterval()</code>. Optionally,
+you can also pass arguments to the callback.</p>
+
+<p>设定一个每<code>delay</code>毫秒重复执行<code>callback</code>回调函数的计划。返回值<code>intervalId</code>可被用于<code>clearInterval()</code>。可以设定要传递给回调函数的参数。</p>
+
+<h3 id="clearInterval">clearInterval(intervalId)</h3>
+
+<p>Stops a interval from triggering.</p>
+
+<p>清除定时器，阻止指定的interval（间隔）定时器被触发。</p>
+  </div>
+  <script type="text/javascript" src="res/sh_main.js" tppabs="http://cnodejs.org/cman/res/sh_main.js"></script>
+  <script type="text/javascript" src="res/sh_javascript.min.js" tppabs="http://cnodejs.org/cman/res/sh_javascript.min.js"></script>
+  <script type="text/javascript">highlight(undefined, undefined, 'pre');</script>
+</body>
+</html>

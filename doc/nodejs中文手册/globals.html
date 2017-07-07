@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+  <meta charset="utf-8" />
+  <title>globals - Node.js Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="res/style.css" tppabs="http://cnodejs.org/cman/res/style.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="res/sh.css" tppabs="http://cnodejs.org/cman/res/sh.css" type="text/css" media="all"/>
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>Node.js Manual &amp; Documentation</h1>
+      <div id="gtoc">
+        <p><a href="index.html" tppabs="http://cnodejs.org/cman/index.html">Index</a> | <a href="all.html" tppabs="http://cnodejs.org/cman/all.html">View on single page</a></p>
+      </div>
+      <hr />
+    </header>
+    <div id="toc"><h2>Table Of Contents</h2><ul><li><a href="#global_Objects_">Global Objects 全局对象</a><ul><li><a href="#global">global</a></li><li><a href="#process">process</a></li><li><a href="#require">require()</a></li><li><a href="#require.resolve">require.resolve()</a></li><li><a href="#require.paths">require.paths</a></li><li><a href="#__filename">__filename</a></li><li><a href="#__dirname">__dirname</a></li><li><a href="#module">module</a></li></ul></li></ul><hr /></div>
+<h2 id="global_Objects_">Global Objects 全局对象</h2>
+
+<p>These object are available in the global scope and can be accessed from anywhere.</p>
+
+<p>这些对象在全局范围内均可用，你可以在任何位置访问这些对象。</p>
+
+<h3 id="global">global</h3>
+
+<p>The global namespace object.</p>
+
+<p>全局命名空间对象</p>
+
+<p>In browsers, the top-level scope is the global scope. That means that in
+browsers if you're in the global scope <code>var something</code> will define a global
+variable. In Node this is different. The top-level scope is not the global
+scope; <code>var something</code> inside a Node module will be local to that module.</p>
+
+<p>在浏览器中，顶级作用域为全局作用域，在全局作用域下通过<code>var something</code>即定义了一个全局变量。但是在Node中并不如此，顶级作用域并非是全局作用域，在Node模块中通过<code>var something</code>定义的变量仅作用于该模块。</p>
+
+<h3 id="process">process</h3>
+
+<p>The process object. See the 'process object' section.</p>
+
+<p>进程对象，参见'process object'章节。</p>
+
+<h3 id="require">require()</h3>
+
+<p>To require modules. See the 'Modules' section.</p>
+
+<p>加载模块，参见'Modules'章节。</p>
+
+<h3 id="require.resolve">require.resolve()</h3>
+
+<p>Use the internal <code>require()</code> machinery to look up the location of a module,
+but rather than loading the module, just return the resolved filename.</p>
+
+<p>使用内部函数<code>require()</code>的机制查找一个模块的位置，而不用加载模块，只是返回解析后的文件名。</p>
+
+<h3 id="require.paths">require.paths</h3>
+
+<p>An array of search paths for <code>require()</code>.  This array can be modified to add
+custom paths.</p>
+
+<p><code>require()</code>的搜索路径数组，你可以修改该数组添加自定义的搜索路径。</p>
+
+<p>Example: add a new path to the beginning of the search list</p>
+
+<p>例如：将一个新的搜索路径插入到搜索列表的头部。</p>
+
+<pre><code>require.paths.unshift('/usr/local/node');</code></pre>
+
+<h3 id="__filename">__filename</h3>
+
+<p>The filename of the script being executed.  This is the absolute path, and not necessarily
+the same filename passed in as a command line argument.</p>
+
+<p>当前正在执行的脚本的文件名。这是一个绝对路径，可能会和命令行参数中传入的文件名不同。</p>
+
+<p>Example: running <code>node example.js</code> from <code>/Users/mjr</code></p>
+
+<p>例如：在目录<code>/Users/mjr</code>下运行<code>node example.js</code></p>
+
+<pre><code>console.log(__filename);
+// /Users/mjr/example.js</code></pre>
+
+<h3 id="__dirname">__dirname</h3>
+
+<p>The dirname of the script being executed.</p>
+
+<p>当前正在执行脚本所在的目录名。</p>
+
+<p>Example: running <code>node example.js</code> from <code>/Users/mjr</code></p>
+
+<p>例如：在目录<code>/Users/mjr</code>下运行<code>node example.js</code></p>
+
+<pre><code>console.log(__dirname);
+// /Users/mjr</code></pre>
+
+<h3 id="module">module</h3>
+
+<p>A reference to the current module. In particular
+<code>module.exports</code> is the same as the <code>exports</code> object. See <code>src/node.js</code>
+for more information.</p>
+
+<p>指向当前模块的引用。特别的，当你通过<code>module.exports</code>和<code>exports</code>两种方式访问的将是同一个对象，参见<code>src/node.js</code>。</p>
+  </div>
+  <script type="text/javascript" src="res/sh_main.js" tppabs="http://cnodejs.org/cman/res/sh_main.js"></script>
+  <script type="text/javascript" src="res/sh_javascript.min.js" tppabs="http://cnodejs.org/cman/res/sh_javascript.min.js"></script>
+  <script type="text/javascript">highlight(undefined, undefined, 'pre');</script>
+</body>
+</html>

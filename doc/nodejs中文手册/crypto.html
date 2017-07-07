@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+  <meta charset="utf-8" />
+  <title>crypto - Node.js Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="res/style.css" tppabs="http://cnodejs.org/cman/res/style.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="res/sh.css" tppabs="http://cnodejs.org/cman/res/sh.css" type="text/css" media="all"/>
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>Node.js Manual &amp; Documentation</h1>
+      <div id="gtoc">
+        <p><a href="index.html" tppabs="http://cnodejs.org/cman/index.html">Index</a> | <a href="all.html" tppabs="http://cnodejs.org/cman/all.html">View on single page</a></p>
+      </div>
+      <hr />
+    </header>
+    <div id="toc"><h2>Table Of Contents</h2><ul><li><a href="#crypto_">Crypto 加密模块</a><ul><li><a href="#crypto.createCredentials">crypto.createCredentials(details)</a></li><li><a href="#crypto.createHash">crypto.createHash(algorithm)</a></li><li><a href="#hash.update">hash.update(data)</a></li><li><a href="#hash.digest">hash.digest(encoding='binary')</a></li><li><a href="#crypto.createHmac">crypto.createHmac(algorithm, key)</a></li><li><a href="#hmac.update">hmac.update(data)</a></li><li><a href="#hmac.digest">hmac.digest(encoding='binary')</a></li><li><a href="#crypto.createCipher">crypto.createCipher(algorithm, key)</a></li><li><a href="#cipher.update">cipher.update(data, input_encoding='binary', output_encoding='binary')</a></li><li><a href="#cipher.final">cipher.final(output_encoding='binary')</a></li><li><a href="#crypto.createDecipher">crypto.createDecipher(algorithm, key)</a></li><li><a href="#decipher.update">decipher.update(data, input_encoding='binary', output_encoding='binary')</a></li><li><a href="#decipher.final">decipher.final(output_encoding='binary')</a></li><li><a href="#crypto.createSign">crypto.createSign(algorithm)</a></li><li><a href="#signer.update">signer.update(data)</a></li><li><a href="#signer.sign">signer.sign(private_key, output_format='binary')</a></li><li><a href="#crypto.createVerify">crypto.createVerify(algorithm)</a></li><li><a href="#verifier.update">verifier.update(data)</a></li><li><a href="#verifier.verify">verifier.verify(cert, signature, signature_format='binary')</a></li></ul></li></ul><hr /></div>
+<h2 id="crypto_">Crypto 加密模块</h2>
+
+<p>Use <code>require('crypto')</code> to access this module.</p>
+
+<p>使用<code>require('crypto')</code>调用加密模块。</p>
+
+<p>The crypto module requires OpenSSL to be available on the underlying platform.
+It offers a way of encapsulating secure credentials to be used as part
+of a secure HTTPS net or http connection.</p>
+
+<p>加密模块需要底层系统提供OpenSSL的支持。它提供了一种安全凭证的封装方式，可以用于HTTPS安全网络以及普通HTTP连接。</p>
+
+<p>It also offers a set of wrappers for OpenSSL's hash, hmac, cipher, decipher, sign and verify methods.</p>
+
+<p>该模块还提供了一套针对OpenSSL的hash（哈希），hmac（密钥哈希），cipher（编码），decipher（解码），sign（签名）以及verify（验证）等方法的封装。</p>
+
+<h3 id="crypto.createCredentials">crypto.createCredentials(details)</h3>
+
+<p>Creates a credentials object, with the optional details being a dictionary with keys:</p>
+
+<p>创建一个凭证对象，可选参数details为一个带键值的字典：</p>
+
+<ul><li><p><code>key</code> : a string holding the PEM encoded private key</p><p><code>key</code>：为字符串型，PEM编码的私钥。</p></li><li><p><code>cert</code> : a string holding the PEM encoded certificate</p><p><code>cert</code>：为字符串型，PEM编码的认证证书。</p></li><li><p><code>ca</code> : either a string or list of strings of PEM encoded CA certificates to trust.</p><p><code>ca</code>：字符串形式的PEM编码可信CA证书，或证书列表。</p></li></ul>
+
+<p>If no 'ca' details are given, then node.js will use the default publicly trusted list of CAs as given in
+<a href="javascript:if(confirm('http://mxr.mozilla.org/mozilla/source/security/nss/lib/ckfw/builtins/certdata.txt  \n\n���ļ��޷��� Teleport Ultra ����, ��Ϊ ����һ�����·���ⲿ������Ϊ������ʼ��ַ�ĵ�ַ��  \n\n�����ڷ������ϴ���?'))window.location='http://mxr.mozilla.org/mozilla/source/security/nss/lib/ckfw/builtins/certdata.txt'" tppabs="http://mxr.mozilla.org/mozilla/source/security/nss/lib/ckfw/builtins/certdata.txt">http://mxr.mozilla.org/mozilla/source/security/nss/lib/ckfw/builtins/certdata.txt</a>.</p>
+
+<p>如果没有给出'ca'的详细内容，那么node.js将会使用默认的公开受信任列表，该表位于<a href="javascript:if(confirm('http://mxr.mozilla.org/mozilla/source/security/nss/lib/ckfw/builtins/certdata.txt  \n\n���ļ��޷��� Teleport Ultra ����, ��Ϊ ����һ�����·���ⲿ������Ϊ������ʼ��ַ�ĵ�ַ��  \n\n�����ڷ������ϴ���?'))window.location='http://mxr.mozilla.org/mozilla/source/security/nss/lib/ckfw/builtins/certdata.txt'" tppabs="http://mxr.mozilla.org/mozilla/source/security/nss/lib/ckfw/builtins/certdata.txt">http://mxr.mozilla.org/mozilla/source/security/nss/lib/ckfw/builtins/certdata.txt</a>。</p>
+
+<h3 id="crypto.createHash">crypto.createHash(algorithm)</h3>
+
+<p>Creates and returns a hash object, a cryptographic hash with the given algorithm
+which can be used to generate hash digests.</p>
+
+<p>创建并返回一个hash对象，它是一个指定算法的加密hash，用于生成hash摘要。</p>
+
+<p><code>algorithm</code> is dependent on the available algorithms supported by the version
+of OpenSSL on the platform. Examples are <code>'sha1'</code>, <code>'md5'</code>, <code>'sha256'</code>, <code>'sha512'</code>, etc.
+On recent releases, <code>openssl list-message-digest-algorithms</code> will display the available digest algorithms.</p>
+
+<p>参数<code>algorithm</code>可选择系统上安装的OpenSSL版本所支持的算法。例如：<code>'sha1'</code>, <code>'md5'</code>, <code>'sha256'</code>, <code>'sha512'</code>等。在近期发行的版本中，<code>openssl list-message-digest-algorithms</code>会显示这些可用的摘要算法。</p>
+
+<h3 id="hash.update">hash.update(data)</h3>
+
+<p>Updates the hash content with the given <code>data</code>.
+This can be called many times with new data as it is streamed.</p>
+
+<p>更新hash的内容为指定的<code>data</code>。当使用流数据时可能会多次调用该方法。</p>
+
+<h3 id="hash.digest">hash.digest(encoding='binary')</h3>
+
+<p>Calculates the digest of all of the passed data to be hashed.
+The <code>encoding</code> can be <code>'hex'</code>, <code>'binary'</code> or <code>'base64'</code>.</p>
+
+<p>计算所有传入数据的hash摘要。参数<code>encoding</code>（编码方式）可以为<code>'hex'</code>, <code>'binary'</code> 或者<code>'base64'</code>。</p>
+
+<h3 id="crypto.createHmac">crypto.createHmac(algorithm, key)</h3>
+
+<p>Creates and returns a hmac object, a cryptographic hmac with the given algorithm and key.</p>
+
+<p>创建并返回一个hmac对象，它是一个指定算法和密钥的加密hmac。</p>
+
+<p><code>algorithm</code> is dependent on the available algorithms supported by OpenSSL - see createHash above.
+<code>key</code> is the hmac key to be used.</p>
+
+<p>参数<code>algorithm</code>可选择OpenSSL支持的算法 - 参见上文的createHash。参数<code>key</code>为hmac所使用的密钥。</p>
+
+<h3 id="hmac.update">hmac.update(data)</h3>
+
+<p>Update the hmac content with the given <code>data</code>.
+This can be called many times with new data as it is streamed.</p>
+
+<p>更新hmac的内容为指定的<code>data</code>。当使用流数据时可能会多次调用该方法。</p>
+
+<h3 id="hmac.digest">hmac.digest(encoding='binary')</h3>
+
+<p>Calculates the digest of all of the passed data to the hmac.
+The <code>encoding</code> can be <code>'hex'</code>, <code>'binary'</code> or <code>'base64'</code>.</p>
+
+<p>计算所有传入数据的hmac摘要。参数<code>encoding</code>（编码方式）可以为<code>'hex'</code>, <code>'binary'</code> 或者<code>'base64'</code>。</p>
+
+<h3 id="crypto.createCipher">crypto.createCipher(algorithm, key)</h3>
+
+<p>Creates and returns a cipher object, with the given algorithm and key.</p>
+
+<p>使用指定的算法和密钥创建并返回一个cipher对象。</p>
+
+<p><code>algorithm</code> is dependent on OpenSSL, examples are <code>'aes192'</code>, etc.
+On recent releases, <code>openssl list-cipher-algorithms</code> will display the available cipher algorithms.</p>
+
+<p>参数<code>algorithm</code>可选择OpenSSL支持的算法，例如<code>'aes192'</code>等。在最近的发行版中，<code>openssl list-cipher-algorithms</code>会显示可用的加密的算法。</p>
+
+<h3 id="cipher.update">cipher.update(data, input_encoding='binary', output_encoding='binary')</h3>
+
+<p>Updates the cipher with <code>data</code>, the encoding of which is given in <code>input_encoding</code>
+and can be <code>'utf8'</code>, <code>'ascii'</code> or <code>'binary'</code>. The <code>output_encoding</code> specifies
+the output format of the enciphered data, and can be <code>'binary'</code>, <code>'base64'</code> or <code>'hex'</code>.</p>
+
+<p>使用参数<code>data</code>更新要加密的内容，其编码方式由参数<code>input_encoding</code>指定，可以为 <code>'utf8'</code>, <code>'ascii'</code>或者<code>'binary'</code>。参数<code>output_encoding</code>指定了已加密内容的输出编码方式，可以为 <code>'binary'</code>, <code>'base64'</code>或<code>'hex'</code>。</p>
+
+<p>Returns the enciphered contents, and can be called many times with new data as it is streamed.</p>
+
+<p>返回已加密的内容，当使用流数据时可能会多次调用该方法。</p>
+
+<h3 id="cipher.final">cipher.final(output_encoding='binary')</h3>
+
+<p>Returns any remaining enciphered contents, with <code>output_encoding</code> being one of: <code>'binary'</code>, <code>'ascii'</code> or <code>'utf8'</code>.</p>
+
+<p>返回所有剩余的加密内容，<code>output_encoding</code>输出编码为<code>'binary'</code>, <code>'ascii'</code>或<code>'utf8'</code>其中之一。</p>
+
+<h3 id="crypto.createDecipher">crypto.createDecipher(algorithm, key)</h3>
+
+<p>Creates and returns a decipher object, with the given algorithm and key.
+This is the mirror of the cipher object above.</p>
+
+<p>使用给定的算法和密钥创建并返回一个解密对象。该对象为上述加密对象的反向运算。</p>
+
+<h3 id="decipher.update">decipher.update(data, input_encoding='binary', output_encoding='binary')</h3>
+
+<p>Updates the decipher with <code>data</code>, which is encoded in <code>'binary'</code>, <code>'base64'</code> or <code>'hex'</code>.
+The <code>output_decoding</code> specifies in what format to return the deciphered plaintext: <code>'binary'</code>, <code>'ascii'</code> or <code>'utf8'</code>.</p>
+
+<p>使用参数<code>data</code>更新要解密的内容，其编码方式为<code>'binary'</code>，<code>'base64'</code>或<code>'hex'</code>。参数<code>output_encoding</code>指定了已解密的明文内容的输出编码方式，可以为 <code>'binary'</code>，<code>'ascii'</code>或<code>'utf8'</code>。</p>
+
+<h3 id="decipher.final">decipher.final(output_encoding='binary')</h3>
+
+<p>Returns any remaining plaintext which is deciphered,
+with <code>output_encoding' being one of: </code>'binary'<code>, </code>'ascii'<code> or </code>'utf8'`.</p>
+
+<p>返回全部剩余的已解密的明文，其<code>output_encoding' 为</code>'binary'<code>, </code>'ascii'<code>或</code>'utf8'`其中之一。</p>
+
+<h3 id="crypto.createSign">crypto.createSign(algorithm)</h3>
+
+<p>Creates and returns a signing object, with the given algorithm.
+On recent OpenSSL releases, <code>openssl list-public-key-algorithms</code> will display
+the available signing algorithms. Examples are <code>'RSA-SHA256'</code>.</p>
+
+<p>使用给定的算法创建并返回一个签名器对象。在现有的OpenSSL发行版中，<code>openssl list-public-key-algorithms</code>会显示可用的签名算法，例如：<code>'RSA-SHA256'</code>。</p>
+
+<h3 id="signer.update">signer.update(data)</h3>
+
+<p>Updates the signer object with data.
+This can be called many times with new data as it is streamed.</p>
+
+<p>使用data参数更新签名器对象。当使用流数据时可能会多次调用该方法。</p>
+
+<h3 id="signer.sign">signer.sign(private_key, output_format='binary')</h3>
+
+<p>Calculates the signature on all the updated data passed through the signer.
+<code>private_key</code> is a string containing the PEM encoded private key for signing.</p>
+
+<p>对所有传入签名器的数据计算其签名。<code>private_key</code>为字符串，它包含了PEM编码的用于签名的私钥。</p>
+
+<p>Returns the signature in <code>output_format</code> which can be <code>'binary'</code>, <code>'hex'</code> or <code>'base64'</code>.</p>
+
+<p>返回签名，其<code>output_format</code>输出可以为<code>'binary'</code>, <code>'hex'</code> 或者<code>'base64'</code>。</p>
+
+<h3 id="crypto.createVerify">crypto.createVerify(algorithm)</h3>
+
+<p>Creates and returns a verification object, with the given algorithm.
+This is the mirror of the signing object above.</p>
+
+<p>使用给定算法创建并返回一个验证器对象。它是上述签名器对象的反向运算。</p>
+
+<h3 id="verifier.update">verifier.update(data)</h3>
+
+<p>Updates the verifier object with data.
+This can be called many times with new data as it is streamed.</p>
+
+<p>使用data参数更新验证器对象。当使用流数据时可能会多次调用该方法。</p>
+
+<h3 id="verifier.verify">verifier.verify(cert, signature, signature_format='binary')</h3>
+
+<p>Verifies the signed data by using the <code>cert</code> which is a string containing
+the PEM encoded public key, and <code>signature</code>, which is the previously calculates
+signature for the data, in the <code>signature_format</code> which can be <code>'binary'</code>, <code>'hex'</code> or <code>'base64'</code>.</p>
+
+<p>使用参数<code>cert</code>和<code>signature</code>验证已签名的数据，<code>cert</code>为经过PEM编码的公钥字符串，<code>signature</code>为之前已计算的数据的签名，<code>signature_format</code>可以为<code>'binary'</code>，<code>'hex'</code> 或者<code>'base64'</code>。</p>
+
+<p>Returns true or false depending on the validity of the signature for the data and public key.</p>
+
+<p>根据对数据和公钥进行签名有效性验证的结果，返回true或者false。</p>
+  </div>
+  <script type="text/javascript" src="res/sh_main.js" tppabs="http://cnodejs.org/cman/res/sh_main.js"></script>
+  <script type="text/javascript" src="res/sh_javascript.min.js" tppabs="http://cnodejs.org/cman/res/sh_javascript.min.js"></script>
+  <script type="text/javascript">highlight(undefined, undefined, 'pre');</script>
+</body>
+</html>

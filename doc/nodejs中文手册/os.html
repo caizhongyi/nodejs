@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+  <meta charset="utf-8" />
+  <title>os - Node.js Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="res/style.css" tppabs="http://cnodejs.org/cman/res/style.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="res/sh.css" tppabs="http://cnodejs.org/cman/res/sh.css" type="text/css" media="all"/>
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>Node.js Manual &amp; Documentation</h1>
+      <div id="gtoc">
+        <p><a href="index.html" tppabs="http://cnodejs.org/cman/index.html">Index</a> | <a href="all.html" tppabs="http://cnodejs.org/cman/all.html">View on single page</a></p>
+      </div>
+      <hr />
+    </header>
+    <div id="toc"><h2>Table Of Contents</h2><ul><li><a href="#os_Module_">os Module 操作系统模块</a><ul><li><a href="#os.hostname">os.hostname()</a></li><li><a href="#os.type">os.type()</a></li><li><a href="#os.release">os.release()</a></li><li><a href="#os.uptime">os.uptime()</a></li><li><a href="#os.loadavg">os.loadavg()</a></li><li><a href="#os.totalmem">os.totalmem()</a></li><li><a href="#os.freemem">os.freemem()</a></li><li><a href="#os.cpus">os.cpus()</a></li></ul></li></ul><hr /></div>
+<h2 id="os_Module_">os Module 操作系统模块</h2>
+
+<p>Use <code>require('os')</code> to access this module.</p>
+
+<p>可以通过<code>require('os')</code>访问这个os 模块。</p>
+
+<h3 id="os.hostname">os.hostname()</h3>
+
+<p>Returns the hostname of the operating system.</p>
+
+<p>该方法返回当前操作系统的主机名。</p>
+
+<h3 id="os.type">os.type()</h3>
+
+<p>Returns the operating system name.</p>
+
+<p>该方法返回当前操作系统名称。</p>
+
+<h3 id="os.release">os.release()</h3>
+
+<p>Returns the operating system release.</p>
+
+<p>返回当前操作系统的发型版本。</p>
+
+<h3 id="os.uptime">os.uptime()</h3>
+
+<p>Returns the system uptime in seconds.</p>
+
+<p>该方法返回当前系统的正常运行时间，时间以秒为单位。</p>
+
+<h3 id="os.loadavg">os.loadavg()</h3>
+
+<p>Returns an array containing the 1, 5, and 15 minute load averages.</p>
+
+<p>该方法返回一个数组，该数组存储着系统1分钟，5分钟，以及15分钟的负载均值。</p>
+
+<h3 id="os.totalmem">os.totalmem()</h3>
+
+<p>Returns the total amount of system memory in bytes.</p>
+
+<p>返回系统存储空间总值，该值以字节（byte）为单位。</p>
+
+<h3 id="os.freemem">os.freemem()</h3>
+
+<p>Returns the amount of free system memory in bytes.</p>
+
+<p>返回系统存储的剩余空间，该值以字节（byte）为单位。</p>
+
+<h3 id="os.cpus">os.cpus()</h3>
+
+<p>Returns an array of objects containing information about each CPU/core installed: model, speed (in MHz), and times (an object containing the number of 
+CPU ticks spent in: user, nice, sys, idle, and irq).</p>
+
+<p>该方法返回一个对象数组，该数组包含了关于系统每个CPU/内核的信息：型号，速度（以MHz为单位），以及CPU时间使用情况（包含CPU时间片在用户态、改变过优先级的用户进程、内核态、空闲、以及IRQ各方面的消耗）。</p>
+
+<p>Example inspection of os.cpus:</p>
+
+<p>os.cpus以一个示例如下:</p>
+
+<pre><code>[ { model: 'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
+    speed: 2926,
+    times:
+     { user: 252020,
+       nice: 0,
+       sys: 30340,
+       idle: 1070356870,
+       irq: 0 } },
+  { model: 'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
+    speed: 2926,
+    times:
+     { user: 306960,
+       nice: 0,
+       sys: 26980,
+       idle: 1071569080,
+       irq: 0 } },
+  { model: 'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
+    speed: 2926,
+    times:
+     { user: 248450,
+       nice: 0,
+       sys: 21750,
+       idle: 1070919370,
+       irq: 0 } },
+  { model: 'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
+    speed: 2926,
+    times:
+     { user: 256880,
+       nice: 0,
+       sys: 19430,
+       idle: 1070905480,
+       irq: 20 } },
+  { model: 'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
+    speed: 2926,
+    times:
+     { user: 511580,
+       nice: 20,
+       sys: 40900,
+       idle: 1070842510,
+       irq: 0 } },
+  { model: 'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
+    speed: 2926,
+    times:
+     { user: 291660,
+       nice: 0,
+       sys: 34360,
+       idle: 1070888000,
+       irq: 10 } },
+  { model: 'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
+    speed: 2926,
+    times:
+     { user: 308260,
+       nice: 0,
+       sys: 55410,
+       idle: 1071129970,
+       irq: 880 } },
+  { model: 'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
+    speed: 2926,
+    times:
+     { user: 266450,
+       nice: 1480,
+       sys: 34920,
+       idle: 1072572010,
+       irq: 30 } } ]</code></pre>
+  </div>
+  <script type="text/javascript" src="res/sh_main.js" tppabs="http://cnodejs.org/cman/res/sh_main.js"></script>
+  <script type="text/javascript" src="res/sh_javascript.min.js" tppabs="http://cnodejs.org/cman/res/sh_javascript.min.js"></script>
+  <script type="text/javascript">highlight(undefined, undefined, 'pre');</script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+  <meta charset="utf-8" />
+  <title>https - Node.js Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="res/style.css" tppabs="http://cnodejs.org/cman/res/style.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="res/sh.css" tppabs="http://cnodejs.org/cman/res/sh.css" type="text/css" media="all"/>
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>Node.js Manual &amp; Documentation</h1>
+      <div id="gtoc">
+        <p><a href="index.html" tppabs="http://cnodejs.org/cman/index.html">Index</a> | <a href="all.html" tppabs="http://cnodejs.org/cman/all.html">View on single page</a></p>
+      </div>
+      <hr />
+    </header>
+    <div id="toc"><h2>Table Of Contents</h2><ul><li><a href="#https.Server">https.Server</a></li><li><a href="#https.createServer">https.createServer</a></li><li><a href="#https.request">https.request(options, callback)</a></li><li><a href="#https.get">https.get(options, callback)</a></li></ul><hr /></div>
+<p>﻿## HTTPS HTTPS模块</p>
+
+<p>HTTPS is the HTTP protocol over TLS/SSL. In Node this is implemented as a
+separate module.</p>
+
+<p>HTTPS是基于TLS（Transport Layer Security 传输层安全）/SSL（Secure Sockets Layer 安全套接层）的HTTP协议，在Node中，它作为一个独立的模块被实现</p>
+
+<h2 id="https.Server">https.Server</h2>
+
+<h2 id="https.createServer">https.createServer</h2>
+
+<p>Example:</p>
+
+<p>例子：</p>
+
+<pre><code>// curl -k https://localhost:8000/
+var https = require('https');
+var fs = require('fs');
+
+var options = {
+  key: fs.readFileSync('test/fixtures/keys/agent2-key.pem'),
+  cert: fs.readFileSync('test/fixtures/keys/agent2-cert.pem')
+};
+
+https.createServer(options, function (req, res) {
+  res.writeHead(200);
+  res.end("hello world\n");
+}).listen(8000);</code></pre>
+
+<h2 id="https.request">https.request(options, callback)</h2>
+
+<p>Makes a request to a secure web server.
+Similar options to <code>http.request()</code>.</p>
+
+<p>向安全的web服务器发送请求，可选参数和<code>http.request()</code>类似。</p>
+
+<p>Example:</p>
+
+<p>例子：</p>
+
+<pre><code>var https = require('https');
+
+var options = {
+  host: 'encrypted.google.com',
+  port: 443,
+  path: '/',
+  method: 'GET'
+};
+
+var req = https.request(options, function(res) {
+  console.log("statusCode: ", res.statusCode);
+  console.log("headers: ", res.headers);
+
+  res.on('data', function(d) {
+    process.stdout.write(d);
+  });
+});
+req.end();
+
+req.on('error', function(e) {
+  console.error(e);
+});</code></pre>
+
+<p>The options argument has the following options</p>
+
+<p>options参数可包含以下内容：</p>
+
+<ul><li>host: IP or domain of host to make request to. Defaults to <code>'localhost'</code>.
+host: 要访问的主机的IP地址或域名。默认为<code>'localhost'</code>。</li><li>port: port of host to request to. Defaults to 443.
+port: 要访问的主机端口。默认为433。</li><li>path: Path to request. Default <code>'/'</code>.
+path: 要访问的路径。默认为<code>'/'</code>。</li><li>method: HTTP request method. Default <code>'GET'</code>.
+method: HTTP请求方式。默认为<code>'GET'</code>。</li><li>key: Private key to use for SSL. Default <code>null</code>.
+key: SSL所使用的私钥。默认为<code>null</code>。</li><li>cert: Public x509 certificate to use. Default <code>null</code>.
+cert: 所使用的x509公钥证书。默认为<code>null</code>。</li><li>ca: An authority certificate or array of authority certificates to check
+the remote host against.
+ca: 用于验证远程主机身份的一个认证中心证书（或多个认证中心证书数组）。</li></ul>
+
+<h2 id="https.get">https.get(options, callback)</h2>
+
+<p>Like <code>http.get()</code> but for HTTPS.</p>
+
+<p>类似<code>http.get()</code>但它基于HTTPS协议。</p>
+
+<p>Example:</p>
+
+<p>例子：</p>
+
+<pre><code>var https = require('https');
+
+https.get({ host: 'encrypted.google.com', path: '/' }, function(res) {
+  console.log("statusCode: ", res.statusCode);
+  console.log("headers: ", res.headers);
+
+  res.on('data', function(d) {
+    process.stdout.write(d);
+  });
+
+}).on('error', function(e) {
+  console.error(e);
+});</code></pre>
+  </div>
+  <script type="text/javascript" src="res/sh_main.js" tppabs="http://cnodejs.org/cman/res/sh_main.js"></script>
+  <script type="text/javascript" src="res/sh_javascript.min.js" tppabs="http://cnodejs.org/cman/res/sh_javascript.min.js"></script>
+  <script type="text/javascript">highlight(undefined, undefined, 'pre');</script>
+</body>
+</html>

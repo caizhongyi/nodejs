@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+  <meta charset="utf-8" />
+  <title>querystring - Node.js Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="res/style.css" tppabs="http://cnodejs.org/cman/res/style.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="res/sh.css" tppabs="http://cnodejs.org/cman/res/sh.css" type="text/css" media="all"/>
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>Node.js Manual &amp; Documentation</h1>
+      <div id="gtoc">
+        <p><a href="index.html" tppabs="http://cnodejs.org/cman/index.html">Index</a> | <a href="all.html" tppabs="http://cnodejs.org/cman/all.html">View on single page</a></p>
+      </div>
+      <hr />
+    </header>
+    <div id="toc"><h2>Table Of Contents</h2><ul><li><a href="#query_String_">Query String 查询字符串模块</a><ul><li><a href="#querystring.stringify">querystring.stringify(obj, sep='&', eq='=')</a></li><li><a href="#querystring.parse">querystring.parse(str, sep='&', eq='=')</a></li><li><a href="#querystring.escape">querystring.escape</a></li><li><a href="#querystring.unescape">querystring.unescape</a></li></ul></li></ul><hr /></div>
+<h2 id="query_String_">Query String 查询字符串模块</h2>
+
+<p>This module provides utilities for dealing with query strings.
+It provides the following methods:</p>
+
+<p>该模块为处理查询字符串提供了一些实用的功能。包括如下的方法：</p>
+
+<h3 id="querystring.stringify">querystring.stringify(obj, sep='&amp;', eq='=')</h3>
+
+<p>Serialize an object to a query string.
+Optionally override the default separator and assignment characters.</p>
+
+<p>将一个对象序列化为一个查询字符串，可选择是否覆盖默认的分隔符和赋值符。</p>
+
+<p>Example:</p>
+
+<p>例如：</p>
+
+<pre><code>querystring.stringify({foo: 'bar'})
+// returns
+'foo=bar'
+
+querystring.stringify({foo: 'bar', baz: 'bob'}, ';', ':')
+// returns
+'foo:bar;baz:bob'</code></pre>
+
+<h3 id="querystring.parse">querystring.parse(str, sep='&amp;', eq='=')</h3>
+
+<p>Deserialize a query string to an object.
+Optionally override the default separator and assignment characters.</p>
+
+<p>将一个查询字符串反序列化为一个对象，可选择是否覆盖默认的分隔符和赋值符。</p>
+
+<p>Example:</p>
+
+<p>例如：</p>
+
+<pre><code>querystring.parse('a=b&amp;b=c')
+// returns
+{ a: 'b', b: 'c' }</code></pre>
+
+<h3 id="querystring.escape">querystring.escape</h3>
+
+<p>The escape function used by <code>querystring.stringify</code>,
+provided so that it could be overridden if necessary.</p>
+
+<p>由<code>querystring.stringify</code>使用的转义函数，需要时可重置其内容。</p>
+
+<h3 id="querystring.unescape">querystring.unescape</h3>
+
+<p>The unescape function used by <code>querystring.parse</code>,
+provided so that it could be overridden if necessary.</p>
+
+<p>由<code>querystring.parse</code>使用的反转义函数，需要时可重置其内容。</p>
+  </div>
+  <script type="text/javascript" src="res/sh_main.js" tppabs="http://cnodejs.org/cman/res/sh_main.js"></script>
+  <script type="text/javascript" src="res/sh_javascript.min.js" tppabs="http://cnodejs.org/cman/res/sh_javascript.min.js"></script>
+  <script type="text/javascript">highlight(undefined, undefined, 'pre');</script>
+</body>
+</html>
