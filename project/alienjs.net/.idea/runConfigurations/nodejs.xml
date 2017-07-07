@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="nodejs" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="$PROJECT_DIR$/../../node/node" path-to-js-file="server.js" application-parameters="node-dev --debug" working-dir="$PROJECT_DIR$">
+    <browser name="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
+    <RunnerSettings RunnerId="NodeJS.run" />
+    <ConfigurationWrapper RunnerId="NodeJS.run" />
+    <method />
+  </configuration>
+</component>
+

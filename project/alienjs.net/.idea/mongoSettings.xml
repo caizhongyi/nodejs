@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MongoConfiguration">
+    <option name="serverConfigurations">
+      <list>
+        <ServerConfiguration>
+          <option name="connectOnIdeStartup" value="true" />
+          <option name="label" value="alienjs" />
+          <option name="serverUrls">
+            <list>
+              <option value="localhost:8908" />
+            </list>
+          </option>
+          <option name="shellArgumentsLine" value="--port 8908" />
+          <option name="userDatabase" value="alienjs" />
+        </ServerConfiguration>
+      </list>
+    </option>
+    <option name="shellPath" value="G:\mongodb\bin\mongo.exe" />
+  </component>
+</project>
+

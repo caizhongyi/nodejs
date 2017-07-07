@@ -1,0 +1,28 @@
+extends ../layouts/default
+block css
+  style.
+    .site-header .logo {
+      opacity: 0;
+      animation: apparate 2s 1s;
+      -webkit-animation: apparate 2s 1s;
+    }
+block content
+  .fancy-border-bottom.text-center
+    h1 Alienjs
+    .lead Alienjs 是一个基于jQuery的简易脚本插件。
+    //-.buttons
+      a(href='http://github.com/JedWatson/keystone-demo', target='_blank', title='View on GitHub').btn.btn-primary View on GitHub
+      a(href='http://www.keystonejs.com/guide', target='_blank', title='KeystoneJS Documentation').btn.btn-link Read the Docs
+  //h3=alienjs.title
+  //.masonry.transitions-enabled.clearfix
+    each item, i in alienjs.data
+      .masonrybox
+        .card--default
+          a(href='/blog/post/' + item.slug)
+            img(src=item.image)
+            .masonrybox-info
+              .masonrybox-content
+                span= item.title
+                != item.content.brief
+
+block page-js

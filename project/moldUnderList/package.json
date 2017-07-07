@@ -1,0 +1,16 @@
+{
+  "name": "helloworld",
+  "main": "app/index.html",
+  "window" : {
+    "debug" : true ,
+    "toolbar" : true ,
+    "frame" : true ,
+    "transparent" : false ,
+    "resziable" : true,
+     "width" : 1200,
+     "height" : 700
+  },
+  "scripts" : {
+    "dev" : "nw --remote-debugging-port=8080"
+  }
+}

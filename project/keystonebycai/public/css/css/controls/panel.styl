@@ -1,0 +1,46 @@
+@require "../mixins/index"
+
+.panel
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  .panel-heading
+    background: #F9F9F9;
+  .contain
+    display: block;
+  .panel-body
+    display: none;
+    border-top: 1px solid #ddd;
+  &.active .panel-body
+    display: block ;
+  .icon.pull-right
+      margin-top: 5px;
+  .icon-chevron-up:before ,.icon-chevron-down:before
+    content: "\f078";
+  .icon-minus-sign:before ,.icon-plus-sign:before
+    content: "\f055";
+  &.active
+    .icon-chevron-up:before ,.icon-chevron-down:before
+      content: "\f077";
+    .icon-minus-sign:before ,.icon-plus-sign:before
+      content: "\f056";
+  
+
+.panel-group
+  .panel
+    margin-bottom: 0;
+  .panel + .panel
+    margin-top: -1px;
+
+.panel-horizontal
+  clearfix()
+  .panel,.panel-heading,.panel-body
+    float: left;
+    height: 300px;
+  .panel-heading
+    width: 60px;
+  .panel + .panel
+    margin:0 0 0 -1px;
+  .panel-body
+    border-top: none;
+    border-left:1px solid #ddd;
+

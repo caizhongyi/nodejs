@@ -1,0 +1,25 @@
+{
+  "name": "alienjs",
+  "version": "1.0.0",
+  "description": "alienjs",
+  "main": ["global" ,"index" , "post"],
+  "repository": {},
+  "dependencies": {
+     "jquery" : "1.11.1",
+     "jquery-masonry" : "2.1.03",
+     "jquery-migrate" : "1.2.1"
+  },
+  "devDependencies": {
+  },
+  "scripts": {
+    "build-js": "browserify -r jquery -r jquery-easing common.js | uglifyjs -mc > dist/common.min.js && browserify -x jquery index.js | uglifyjs -mc > dist/index.min.js",
+    "build-css": "cat static/pages/*.css tabs/*/*.css",
+    "build": "npm run build-js",
+    "watch-js": "watchify -x jquery jquery-easing index.js -o dist/index.js -dv",
+    "watch-css": "catw static/pages/*.css tabs/*/*.css -o static/bundle.css -v",
+    "watch-debug": "watchify",
+    "watch": "npm run watch-debug",
+    "start": "node server.js",
+    "test": "tap test/*.js"
+  }
+}

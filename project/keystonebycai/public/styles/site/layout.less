@@ -1,0 +1,212 @@
+body,
+html {
+	height: 100%;
+    font-family: microsoft yahei, simhei;
+}
+
+ol.linenums{
+  margin-left: -10px;
+}
+
+.icon,[class*="icon"]{ margin-right: 5px;}
+// Wrapper
+.wrapper {
+	background-color: white;
+	min-height: 100%;
+
+	@media (min-width: @breakpoint-lg) {
+		border-left: 1px solid darken(@body-bg, 6%);
+		border-right: 1px solid darken(@body-bg, 6%);
+		margin: 0 auto;
+		width: @breakpoint-lg - 2; // less the borders
+	}
+}
+.wrapper-inner {
+	padding-left: 15px;
+	padding-right: 15px;
+	@media (min-width: @breakpoint-sm) {
+		margin: 0 auto;
+        width: @breakpoint-sm;
+        padding-left: 0;
+        padding-right: 0;
+	}
+
+}
+
+
+
+
+// header
+.site-header {
+	background: url('/images/keystone-arch.jpg') center center no-repeat;
+	background-size: cover;
+	height: 100px;
+	line-height: 100px;
+	text-align: center;
+
+	.logo {
+		display: inline-block;
+	}
+
+	@media (min-width: @breakpoint-sm) {
+		height: 200px;
+		line-height: 200px;
+	}
+	@media (max-width: @breakpoint-sm) {
+		.logo {
+			height: 50%;
+		}
+	}
+}
+
+
+
+
+// navbar
+.navbar {
+	position: relative;
+    margin: 0 0 40px 0;
+    // min-height: @navbar-height; // Ensure a navbar always shows (e.g., without a .navbar-brand in collapsed mode)
+	border-bottom: 1px solid @hr-border;
+    .btn{ margin-top: 5px;  }
+
+    .navbar-toggle{
+        display: none;
+        padding: 5px 10px;
+        [class*=icon]{ margin: 0;}
+    }
+    .navbar-nav.collapse{
+        transform:translateX(-100%);
+        -webkit-transform:translateX(-100%);
+    }
+    @media (max-width: 500px) {
+        .navbar-toggle{ display: inline-block;}
+        .navbar-nav{
+            position: fixed;
+            left: 0;
+            top:0;
+            width: 250px;
+            height: 100%;
+            transform:translateX(0);
+            -webkit-transform:translateX(0);
+            z-index: 90;
+            li{float: none; width: 100%; text-align: left;}
+        }
+    }
+}
+.navbar-nav-body{
+    @media (min-width: @breakpoint-sm) {
+        margin: 0 auto;
+        width: @breakpoint-sm;
+        padding-left: 0;
+        padding-right: 0;
+    }
+	.pull-right a{ display: inline-block;}
+}
+.navbar-nav {
+	list-style: none;
+	margin: 0 auto;
+	padding: 0;
+	li {
+		display: inline-block;
+		*display: inline;
+		zoom:1;
+	}
+	a {
+		color: @gray-light;
+		display: block;
+		padding: 10px 5px;
+
+		&:hover,
+		&:focus {
+			color: @gray;
+			text-decoration: none;
+		}
+	}
+	.active > a {
+		color: @gray;
+		font-weight: normal;
+	}
+
+	@media (min-width: @breakpoint-sm) {
+		font-size: @font-size-large;
+		font-weight: 200;
+
+		a {
+			padding: 30px;
+		}
+	}
+}
+
+
+// footer
+.site-footer {
+    background: #fafafa;
+	border-top: 1px solid @gray-lighter;
+	color: @gray-light;
+	margin-top: 100px;
+	padding: 50px 0;
+	position: relative;
+	text-align: center;
+	a {
+		color: @gray-light;
+	}
+	
+	@media (min-width: @screen-sm) {
+		padding: 100px 0;
+	}
+	
+}
+
+body.navbar-fixed-top{
+    padding-top: 50px;
+    .navbar{ position: fixed; top: 0; left: 0; margin: 0; width: 100%; background: #fff; box-shadow: 1px 1px 5px #999; z-index:90;}
+    .navbar .navbar-nav a{ padding:10px 20px;}
+    .navbar li.active a,.navbar li:hover a{ background: #eee;}
+    .site-header{ margin-bottom: 20px;}
+}
+
+.input-search{
+
+}
+
+
+// gallery
+.gallery-image {
+	margin-bottom: @grid-gutter-width;
+	
+	img {
+		.img-responsive;
+	}
+}
+
+
+
+// Comments
+#comments {
+	border-top: 1px solid @hr-border;
+	margin-top: 40px;
+	padding-top: 40px;
+}
+.comment-form {
+	margin-bottom: 40px;
+}
+.comment-field {
+	margin-bottom: 10px;
+}
+.comment-field-input {
+	min-height: 60px;
+}
+.comment-thread {
+	font-size: @font-size-base;
+}
+.comment-post {
+	margin: 20px 0;
+}
+
+
+
+// Form stuff
+textarea {
+	.resizable(vertical);
+}

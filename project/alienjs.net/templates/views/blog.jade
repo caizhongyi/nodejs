@@ -1,0 +1,64 @@
+extends ../layouts/default
+
+include ../mixins/post
+
+block content
+    h1=data.category ? data.category.name : 'jQuery 插件'
+    //- p.lead
+        if user && user.canAccessKeystone
+            | Edit the blog with the <a href='/keystone/posts'>Keystone Admin UI</a>, or click the 'edit post' link that will appear for each post on hover.
+        else
+            | You can contribute to this example blog by <a href='/keystone/signin'>signing in</a> as the demo user <code>demo@keystonejs.com / demo</code>
+
+    if filters.category && !data.category
+        h3 找不到内容.
+    else
+        if data.categories.length
+            //- h2 Categories
+            ul.page-filters
+                li(class=!data.category ? 'active' : null): a(href='/blog') 全部
+                each cat in data.categories
+                    li(class=data.category && data.category.id == cat.id ? 'active' : null): a(href='/blog/' + cat.key)= cat.name
+        if data.posts.results.length
+            if data.posts.totalPages > 1
+                h4.lead.text-muted 显示第
+                    strong #{data.posts.first}
+                    |  页到
+                    strong #{data.posts.last}
+                    |  页 总页数
+                    strong #{data.posts.total}
+                    |  页
+            else
+                h4.lead.text-muted 显示 #{data.posts.results.length} 条
+            .masonry.transitions-enabled.clearfix.blog.row
+                each post in data.posts.results
+                    .masonrybox
+                        +post(post)
+            if data.posts.totalPages > 1
+                ul.pagination
+                    if data.posts.previous
+                        li: a(href='?page=' + data.posts.previous): span.entypo.entypo-chevron-thin-left
+                    else
+                        li.disabled: a(href='?page=' + 1): span.entypo.entypo-chevron-thin-left
+                    each p, i in data.posts.pages
+                        li(class=data.posts.currentPage == p ? 'active' : null)
+                            a(href='?page=' + (p == '...' ? (i ? data.posts.totalPages : 1) : p ))= p
+                    if data.posts.next
+                        li: a(href='?page=' + data.posts.next): span.entypo.entypo-chevron-thin-right
+                    else
+                        li.disabled: a(href='?page=' + data.posts.totalPages): span.entypo.entypo-chevron-thin-right
+        else
+            if data.category
+                .jumbotron.text-center
+                    h3 #{data.category.name} 暂无内容.
+            else
+                .jumbotron.text-center
+                    h3 暂无内容.
+block page-js
+    script.
+        $('.masonry').masonry({
+            itemSelector: '.masonrybox',
+            columnWidth: function( containerWidth ) {
+               return containerWidth / 4;
+             }
+        });

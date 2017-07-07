@@ -1,0 +1,68 @@
+.panel {
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+.panel .panel-heading {
+  background: #f9f9f9;
+}
+.panel .contain {
+  display: block;
+}
+.panel .panel-body {
+  display: none;
+  border-top: 1px solid #ddd;
+}
+.panel.active .panel-body {
+  display: block;
+}
+.panel .icon.pull-right {
+  margin-top: 5px;
+}
+.panel .icon-chevron-up:before,
+.panel .icon-chevron-down:before {
+  content: "\f078";
+}
+.panel .icon-minus-sign:before,
+.panel .icon-plus-sign:before {
+  content: "\f055";
+}
+.panel.active .icon-chevron-up:before,
+.panel.active .icon-chevron-down:before {
+  content: "\f077";
+}
+.panel.active .icon-minus-sign:before,
+.panel.active .icon-plus-sign:before {
+  content: "\f056";
+}
+.panel-group .panel {
+  margin-bottom: 0;
+}
+.panel-group .panel + .panel {
+  margin-top: -1px;
+}
+.panel-horizontal {
+  display: block;
+}
+.panel-horizontal:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.panel-horizontal .panel,
+.panel-horizontal .panel-heading,
+.panel-horizontal .panel-body {
+  float: left;
+  height: 300px;
+}
+.panel-horizontal .panel-heading {
+  width: 60px;
+}
+.panel-horizontal .panel + .panel {
+  margin: 0 0 0 -1px;
+}
+.panel-horizontal .panel-body {
+  border-top: none;
+  border-left: 1px solid #ddd;
+}

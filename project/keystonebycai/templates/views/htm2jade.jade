@@ -1,0 +1,8 @@
+extends ../layouts/default
+    style.
+        textarea{ width: 100%;}
+
+    form(metod='post')
+        textarea( name='html' )
+        textarea( name='jade' )= jade
+        button 提交
